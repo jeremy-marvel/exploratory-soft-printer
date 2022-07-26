@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -28,53 +28,95 @@
 #include "../inc/MarlinConfig.h"
 #include <stdint.h>
 
+#define __ES_ITEM(N) N,
+#define _ES_ITEM(K,N) TERN_(K,DEFER4(__ES_ITEM)(N))
+
 enum EndstopEnum : char {
-  X_MIN,
-  Y_MIN,
-  Z_MIN,
-  Z_MIN_PROBE,
-  X_MAX,
-  Y_MAX,
-  Z_MAX,
-  X2_MIN,
-  X2_MAX,
-  Y2_MIN,
-  Y2_MAX,
-  Z2_MIN,
-  Z2_MAX,
-  Z3_MIN,
-  Z3_MAX
+  // Common XYZ (ABC) endstops. Defined according to USE_[XYZ](MIN|MAX)_PLUG settings.
+  _ES_ITEM(HAS_X_MIN, X_MIN)
+  _ES_ITEM(HAS_X_MAX, X_MAX)
+  _ES_ITEM(HAS_Y_MIN, Y_MIN)
+  _ES_ITEM(HAS_Y_MAX, Y_MAX)
+  _ES_ITEM(HAS_Z_MIN, Z_MIN)
+  _ES_ITEM(HAS_Z_MAX, Z_MAX)
+  _ES_ITEM(HAS_I_MIN, I_MIN)
+  _ES_ITEM(HAS_I_MAX, I_MAX)
+  _ES_ITEM(HAS_J_MIN, J_MIN)
+  _ES_ITEM(HAS_J_MAX, J_MAX)
+  _ES_ITEM(HAS_K_MIN, K_MIN)
+  _ES_ITEM(HAS_K_MAX, K_MAX)
+
+  // Extra Endstops for XYZ
+  #if ENABLED(X_DUAL_ENDSTOPS)
+    _ES_ITEM(HAS_X_MIN, X2_MIN)
+    _ES_ITEM(HAS_X_MAX, X2_MAX)
+  #endif
+  #if ENABLED(Y_DUAL_ENDSTOPS)
+    _ES_ITEM(HAS_Y_MIN, Y2_MIN)
+    _ES_ITEM(HAS_Y_MAX, Y2_MAX)
+  #endif
+  #if ENABLED(Z_MULTI_ENDSTOPS)
+    _ES_ITEM(HAS_Z_MIN, Z2_MIN)
+    _ES_ITEM(HAS_Z_MAX, Z2_MAX)
+    #if NUM_Z_STEPPER_DRIVERS >= 3
+      _ES_ITEM(HAS_Z_MIN, Z3_MIN)
+      _ES_ITEM(HAS_Z_MAX, Z3_MAX)
+    #endif
+    #if NUM_Z_STEPPER_DRIVERS >= 4
+      _ES_ITEM(HAS_Z_MIN, Z4_MIN)
+      _ES_ITEM(HAS_Z_MAX, Z4_MAX)
+    #endif
+  #endif
+
+  // Bed Probe state is distinct or shared with Z_MIN (i.e., when the probe is the only Z endstop)
+  _ES_ITEM(HAS_BED_PROBE, Z_MIN_PROBE IF_DISABLED(HAS_CUSTOM_PROBE_PIN, = Z_MIN))
+
+  // The total number of states
+  NUM_ENDSTOP_STATES
+
+  // Endstops can be either MIN or MAX but not both
+  #if HAS_X_MIN || HAS_X_MAX
+    , X_ENDSTOP = TERN(X_HOME_TO_MAX, X_MAX, X_MIN)
+  #endif
+  #if HAS_Y_MIN || HAS_Y_MAX
+    , Y_ENDSTOP = TERN(Y_HOME_TO_MAX, Y_MAX, Y_MIN)
+  #endif
+  #if HAS_Z_MIN || HAS_Z_MAX || HOMING_Z_WITH_PROBE
+    , Z_ENDSTOP = TERN(Z_HOME_TO_MAX, Z_MAX, TERN(HOMING_Z_WITH_PROBE, Z_MIN_PROBE, Z_MIN))
+  #endif
 };
 
-class Endstops {
+#undef __ES_ITEM
+#undef _ES_ITEM
 
+class Endstops {
   public:
 
-    #if HAS_EXTRA_ENDSTOPS
-      typedef uint16_t esbits_t;
-      #if ENABLED(X_DUAL_ENDSTOPS)
-        static float x2_endstop_adj;
-      #endif
-      #if ENABLED(Y_DUAL_ENDSTOPS)
-        static float y2_endstop_adj;
-      #endif
-      #if Z_MULTI_ENDSTOPS
-        static float z2_endstop_adj;
-      #endif
-      #if ENABLED(Z_TRIPLE_ENDSTOPS)
-        static float z3_endstop_adj;
-      #endif
-    #else
-      typedef uint8_t esbits_t;
+    typedef IF<(NUM_ENDSTOP_STATES > 8), uint16_t, uint8_t>::type endstop_mask_t;
+
+    #if ENABLED(X_DUAL_ENDSTOPS)
+      static float x2_endstop_adj;
+    #endif
+    #if ENABLED(Y_DUAL_ENDSTOPS)
+      static float y2_endstop_adj;
+    #endif
+    #if ENABLED(Z_MULTI_ENDSTOPS)
+      static float z2_endstop_adj;
+    #endif
+    #if ENABLED(Z_MULTI_ENDSTOPS) && NUM_Z_STEPPER_DRIVERS >= 3
+      static float z3_endstop_adj;
+    #endif
+    #if ENABLED(Z_MULTI_ENDSTOPS) && NUM_Z_STEPPER_DRIVERS >= 4
+      static float z4_endstop_adj;
     #endif
 
   private:
     static bool enabled, enabled_globally;
-    static esbits_t live_state;
-    static volatile uint8_t hit_state;      // Use X_MIN, Y_MIN, Z_MIN and Z_MIN_PROBE as BIT index
+    static endstop_mask_t live_state;
+    static volatile endstop_mask_t hit_state; // Use X_MIN, Y_MIN, Z_MIN and Z_MIN_PROBE as BIT index
 
     #if ENDSTOP_NOISE_THRESHOLD
-      static esbits_t validated_live_state;
+      static endstop_mask_t validated_live_state;
       static uint8_t endstop_poll_count;    // Countdown from threshold for polling
     #endif
 
@@ -90,11 +132,7 @@ class Endstops {
      * Are endstops or the probe set to abort the move?
      */
     FORCE_INLINE static bool abort_enabled() {
-      return (enabled
-        #if HAS_BED_PROBE
-          || z_probe_enabled
-        #endif
-      );
+      return enabled || TERN0(HAS_BED_PROBE, z_probe_enabled);
     }
 
     static inline bool global_enabled() { return enabled_globally; }
@@ -114,12 +152,12 @@ class Endstops {
     /**
      * Get Endstop hit state.
      */
-    FORCE_INLINE static uint8_t trigger_state() { return hit_state; }
+    FORCE_INLINE static endstop_mask_t trigger_state() { return hit_state; }
 
     /**
      * Get current endstops state
      */
-    FORCE_INLINE static esbits_t state() {
+    FORCE_INLINE static endstop_mask_t state() {
       return
         #if ENDSTOP_NOISE_THRESHOLD
           validated_live_state
@@ -129,15 +167,23 @@ class Endstops {
       ;
     }
 
+    static inline bool probe_switch_activated() {
+      return (true
+        #if ENABLED(PROBE_ACTIVATION_SWITCH)
+          && READ(PROBE_ACTIVATION_SWITCH_PIN) == PROBE_ACTIVATION_SWITCH_STATE
+        #endif
+      );
+    }
+
     /**
      * Report endstop hits to serial. Called from loop().
      */
     static void event_handler();
 
     /**
-     * Report endstop positions in response to M119
+     * Report endstop states in response to M119
      */
-    static void M119();
+    static void report_states();
 
     // Enable / disable endstop checking globally
     static void enable_globally(const bool onoff=true);
@@ -171,6 +217,18 @@ class Endstops {
       static bool monitor_flag;
       static void monitor();
       static void run_monitor();
+    #endif
+
+    #if ENABLED(SPI_ENDSTOPS)
+      typedef struct {
+        union {
+          bool any;
+          struct { bool LINEAR_AXIS_LIST(x:1, y:1, z:1, i:1, j:1, k:1); };
+        };
+      } tmc_spi_homing_t;
+      static tmc_spi_homing_t tmc_spi_homing;
+      static void clear_endstop_state();
+      static bool tmc_spi_homing_check();
     #endif
 };
 

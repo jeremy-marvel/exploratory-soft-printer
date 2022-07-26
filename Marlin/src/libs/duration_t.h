@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -106,11 +106,17 @@ struct duration_t {
     return this->value;
   }
 
+  #if GCC_VERSION <= 50000
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wformat-overflow"
+  #endif
+
   /**
    * @brief Formats the duration as a string
    * @details String will be formated using a "full" representation of duration
    *
-   * @param buffer The array pointed to must be able to accommodate 21 bytes
+   * @param buffer The array pointed to must be able to accommodate 22 bytes
+   *               (21 for the string, 1 more for the terminating nul)
    *
    * Output examples:
    *  123456789012345678901 (strlen)
@@ -120,18 +126,19 @@ struct duration_t {
    *  59m 59s
    *  59s
    */
-  void toString(char *buffer) const {
+  char* toString(char * const buffer) const {
     int y = this->year(),
         d = this->day() % 365,
         h = this->hour() % 24,
         m = this->minute() % 60,
         s = this->second() % 60;
 
-    if (y) sprintf_P(buffer, PSTR("%iy %id %ih %im %is"), y, d, h, m, s);
+         if (y) sprintf_P(buffer, PSTR("%iy %id %ih %im %is"), y, d, h, m, s);
     else if (d) sprintf_P(buffer, PSTR("%id %ih %im %is"), d, h, m, s);
     else if (h) sprintf_P(buffer, PSTR("%ih %im %is"), h, m, s);
     else if (m) sprintf_P(buffer, PSTR("%im %is"), m, s);
     else sprintf_P(buffer, PSTR("%is"), s);
+    return buffer;
   }
 
   /**
@@ -150,16 +157,20 @@ struct duration_t {
              m = uint16_t(this->minute() % 60UL);
     if (with_days) {
       uint16_t d = this->day();
-      sprintf_P(buffer, PSTR("%ud %02u:%02u"), d, h % 24, m);
+      sprintf_P(buffer, PSTR("%hud %02hu:%02hu"), d, h % 24, m);
       return d >= 10 ? 9 : 8;
     }
     else if (h < 100) {
-      sprintf_P(buffer, PSTR("%02u:%02u"), h, m);
+      sprintf_P(buffer, PSTR("%02hu:%02hu"), h, m);
       return 5;
     }
     else {
-      sprintf_P(buffer, PSTR("%u:%02u"), h, m);
+      sprintf_P(buffer, PSTR("%hu:%02hu"), h, m);
       return 6;
     }
   }
+
+  #if GCC_VERSION <= 50000
+    #pragma GCC diagnostic pop
+  #endif
 };

@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -25,11 +25,7 @@
 // Based on https://github.com/niteris/ArduinoSoftSpi
 //
 
-#include "../HAL/shared/Marduino.h"
-
-#ifndef FORCE_INLINE
-  #define FORCE_INLINE inline __attribute__((always_inline))
-#endif
+#include "../HAL/shared/Marduino.h" // CORE_TEENSY
 
 #define nop __asm__ volatile ("nop") // NOP for timing
 
@@ -66,7 +62,7 @@
      * @return value read
      */
     FORCE_INLINE static bool fastDigitalRead(uint8_t pin) {
-      return g_APinDescription[pin].pPort->PIO_PDSR & g_APinDescription[pin].ulPin;
+      return digitalRead(pin);
     }
 
     /**
@@ -75,10 +71,7 @@
      * @param[in] level value to write
      */
     FORCE_INLINE static void fastDigitalWrite(uint8_t pin, bool value) {
-      if (value)
-        g_APinDescription[pin].pPort->PIO_SODR = g_APinDescription[pin].ulPin;
-      else
-        g_APinDescription[pin].pPort->PIO_CODR = g_APinDescription[pin].ulPin;
+      digitalWrite(pin, value);
     }
 
   #endif // !CORE_TEENSY
@@ -475,7 +468,7 @@
   static constexpr uint8_t digitalPinCount = sizeof(pinMap) / sizeof(pin_map_t);
 
   /** generate bad pin number error */
-  void badPinNumber(void)
+  void badPinNumber()
     __attribute__((error("Pin number is too large or not a constant")));
 
   /**
@@ -718,7 +711,7 @@ class SoftSPI {
 
   FORCE_INLINE bool MODE_CPHA(uint8_t mode) { return bool(mode & 1); }
   FORCE_INLINE bool MODE_CPOL(uint8_t mode) { return bool(mode & 2); }
-  FORCE_INLINE void receiveBit(uint8_t bit, uint8_t* data) {
+  FORCE_INLINE void receiveBit(uint8_t bit, uint8_t *data) {
     if (MODE_CPHA(Mode)) fastDigitalWrite(SckPin, !MODE_CPOL(Mode));
     nop;
     nop;
@@ -737,7 +730,7 @@ class SoftSPI {
     if (!MODE_CPHA(Mode)) fastDigitalWrite(SckPin, MODE_CPOL(Mode));
   }
 
-  FORCE_INLINE void transferBit(uint8_t bit, uint8_t* rxData, uint8_t txData) {
+  FORCE_INLINE void transferBit(uint8_t bit, uint8_t *rxData, uint8_t txData) {
     if (MODE_CPHA(Mode)) fastDigitalWrite(SckPin, !MODE_CPOL(Mode));
     fastDigitalWrite(MosiPin, txData & _BV(bit));
     fastDigitalWrite(SckPin,

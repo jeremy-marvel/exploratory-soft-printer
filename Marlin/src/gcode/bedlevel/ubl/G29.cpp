@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -29,8 +29,19 @@
 #if ENABLED(AUTO_BED_LEVELING_UBL)
 
 #include "../../gcode.h"
-#include "../../../feature/bedlevel/ubl/ubl.h"
+#include "../../../feature/bedlevel/bedlevel.h"
 
-void GcodeSuite::G29() { ubl.G29(); }
+#if ENABLED(FULL_REPORT_TO_HOST_FEATURE)
+  #include "../../../module/motion.h"
+#endif
+
+void GcodeSuite::G29() {
+
+  TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_PROBE));
+
+  ubl.G29();
+
+  TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_IDLE));
+}
 
 #endif // AUTO_BED_LEVELING_UBL

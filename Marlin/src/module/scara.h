@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,32 +16,38 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+#pragma once
 
 /**
  * scara.h - SCARA-specific functions
  */
 
-#pragma once
-
 #include "../core/macros.h"
 
-extern float delta_segments_per_second;
+extern float segments_per_second;
 
-// Float constants for SCARA calculations
-float constexpr L1 = SCARA_LINKAGE_1, L2 = SCARA_LINKAGE_2,
-                L1_2 = sq(float(L1)), L1_2_2 = 2.0 * L1_2,
-                L2_2 = sq(float(L2));
+#if ENABLED(AXEL_TPARA)
 
+  float constexpr L1 = TPARA_LINKAGE_1, L2 = TPARA_LINKAGE_2,   // Float constants for Robot arm calculations
+                  L1_2 = sq(float(L1)), L1_2_2 = 2.0 * L1_2,
+                  L2_2 = sq(float(L2));
+
+  void forward_kinematics(const_float_t a, const_float_t b, const_float_t c);
+  void home_TPARA();
+
+#else
+
+  float constexpr L1 = SCARA_LINKAGE_1, L2 = SCARA_LINKAGE_2,   // Float constants for SCARA calculations
+                  L1_2 = sq(float(L1)), L1_2_2 = 2.0 * L1_2,
+                  L2_2 = sq(float(L2));
+
+  void forward_kinematics(const_float_t a, const_float_t b);
+
+#endif
+
+void inverse_kinematics(const xyz_pos_t &raw);
 void scara_set_axis_is_at_home(const AxisEnum axis);
-
-void inverse_kinematics(const float (&raw)[XYZ]);
-FORCE_INLINE void inverse_kinematics(const float (&raw)[XYZE]) {
-  const float raw_xyz[XYZ] = { raw[X_AXIS], raw[Y_AXIS], raw[Z_AXIS] };
-  inverse_kinematics(raw_xyz);
-}
-void forward_kinematics_SCARA(const float &a, const float &b);
-
 void scara_report_positions();

@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -46,10 +46,24 @@
 void GcodeSuite::M425() {
   bool noArgs = true;
 
-  LOOP_XYZ(i) {
-    if (parser.seen(axis_codes[i])) {
+  auto axis_can_calibrate = [](const uint8_t a) {
+    switch (a) {
+      default: return false;
+      LINEAR_AXIS_CODE(
+        case X_AXIS: return AXIS_CAN_CALIBRATE(X),
+        case Y_AXIS: return AXIS_CAN_CALIBRATE(Y),
+        case Z_AXIS: return AXIS_CAN_CALIBRATE(Z),
+        case I_AXIS: return AXIS_CAN_CALIBRATE(I),
+        case J_AXIS: return AXIS_CAN_CALIBRATE(J),
+        case K_AXIS: return AXIS_CAN_CALIBRATE(K),
+      );
+    }
+  };
+
+  LOOP_LINEAR_AXES(a) {
+    if (axis_can_calibrate(a) && parser.seen(AXIS_CHAR(a))) {
       planner.synchronize();
-      backlash.distance_mm[i] = parser.has_value() ? parser.value_linear_units() : backlash.get_measurement(i);
+      backlash.distance_mm[a] = parser.has_value() ? parser.value_linear_units() : backlash.get_measurement(AxisEnum(a));
       noArgs = false;
     }
   }
@@ -74,9 +88,8 @@ void GcodeSuite::M425() {
     SERIAL_ECHOLNPGM("active:");
     SERIAL_ECHOLNPAIR("  Correction Amount/Fade-out:     F", backlash.get_correction(), " (F1.0 = full, F0.0 = none)");
     SERIAL_ECHOPGM("  Backlash Distance (mm):        ");
-    LOOP_XYZ(a) {
-      SERIAL_CHAR(' ');
-      SERIAL_CHAR(axis_codes[a]);
+    LOOP_LINEAR_AXES(a) if (axis_can_calibrate(a)) {
+      SERIAL_CHAR(' ', AXIS_CHAR(a));
       SERIAL_ECHO(backlash.distance_mm[a]);
       SERIAL_EOL();
     }
@@ -88,10 +101,9 @@ void GcodeSuite::M425() {
     #if ENABLED(MEASURE_BACKLASH_WHEN_PROBING)
       SERIAL_ECHOPGM("  Average measured backlash (mm):");
       if (backlash.has_any_measurement()) {
-        LOOP_XYZ(a) if (backlash.has_measurement(a)) {
-          SERIAL_CHAR(' ');
-          SERIAL_CHAR(axis_codes[a]);
-          SERIAL_ECHO(backlash.get_measurement(a));
+        LOOP_LINEAR_AXES(a) if (axis_can_calibrate(a) && backlash.has_measurement(AxisEnum(a))) {
+          SERIAL_CHAR(' ', AXIS_CHAR(a));
+          SERIAL_ECHO(backlash.get_measurement(AxisEnum(a)));
         }
       }
       else
