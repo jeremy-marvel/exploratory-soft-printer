@@ -1,7 +1,7 @@
 //#define LULZBOT_Hibiscus_Mini2
 //#define LULZBOT_Oliveoil_TAZ6
 //#define LULZBOT_Redgum_TAZWorkhorse
-//#define LULZBOT_Quiver_TAZPro
+#define LULZBOT_Quiver_TAZPro
 //#define LULZBOT_Gladiator_TAZProXT
 //#define LULZBOT_Sidekick_289
 //#define LULZBOT_Sidekick_747
@@ -95,7 +95,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "Lulzbot" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "NIST - J. Case" // Who made the changes.
 #define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 #define LULZBOT_FW_VERSION "2.0.9.0.13"
 
@@ -259,13 +259,13 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #if ANY(MiniV2, Sidekick_289, Sidekick_747)
-    #define MOTHERBOARD BOARD_EINSY_RETRO
-  #elif ANY(TAZ6, Workhorse)
-    #define MOTHERBOARD BOARD_RAMBO
-  #elif ANY(TAZPro, TAZProXT)
+  //#if ANY(MiniV2, Sidekick_289, Sidekick_747)
+    //#define MOTHERBOARD BOARD_EINSY_RETRO
+  //#elif ANY(TAZ6, Workhorse)
+    //#define MOTHERBOARD BOARD_RAMBO
+  //#elif ANY(TAZPro, TAZProXT)
     #define MOTHERBOARD BOARD_ARCHIM2
-  #endif
+  //#endif
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
