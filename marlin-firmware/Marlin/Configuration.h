@@ -95,7 +95,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "NIST - J. Case" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "Lulzbot -> NIST - J. Case" // Who made the changes.
 #define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 #define LULZBOT_FW_VERSION "2.0.9.0.13"
 
@@ -258,6 +258,7 @@
 //#define BLUETOOTH
 
 // Choose the name from boards.h that matches your setup
+// Note: options are commented out to provide the Marlin Auto Build extension the required code to identify the board and pins (J. Case)
 #ifndef MOTHERBOARD
   //#if ANY(MiniV2, Sidekick_289, Sidekick_747)
     //#define MOTHERBOARD BOARD_EINSY_RETRO
@@ -387,7 +388,8 @@
   #if ANY(TAZ6, Workhorse)
     #define LULZBOT_MOTOR_CURRENT_E0          177 // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
   #else
-    #define LULZBOT_MOTOR_CURRENT_E0          960 // mA
+    //#define LULZBOT_MOTOR_CURRENT_E0          960 // mA
+    #define LULZBOT_MOTOR_CURRENT_E0            0 // mA - set current through the motor to zero because there is no motor (J. Case)
   #endif
 #endif
 #if defined(TOOLHEAD_SL_SE_HE)
@@ -724,8 +726,8 @@
  *   998 : Dummy Table that ALWAYS reads 25°C or the temperature defined below.
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  */
-#define TEMP_SENSOR_0 5
-#define TEMP_SENSOR_1 LULZBOT_TEMP_SENSOR_1
+#define TEMP_SENSOR_0 998 // change this to a dummy sensor (J. Case)
+#define TEMP_SENSOR_1 0 //LULZBOT_TEMP_SENSOR_1 - change this to `not used' (J. Case)
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
 #define TEMP_SENSOR_4 0
@@ -1250,7 +1252,7 @@
   #define X_DRIVER_TYPE  TMC2130
   #define Y_DRIVER_TYPE  TMC2130
   #define Z_DRIVER_TYPE  TMC2130
-  #define E0_DRIVER_TYPE TMC2130
+  #define E0_DRIVER_TYPE TMC2130 // these should be adjusted possibly (J. Case)
   #define E1_DRIVER_TYPE TMC2130
   #define E2_DRIVER_TYPE TMC2130
 #endif
@@ -1499,7 +1501,7 @@
  * nozzle system or a piezo-electric smart effector.
  */
 #if DISABLED(Sidekick_289, Sidekick_747)
-  #define NOZZLE_AS_PROBE
+  #define NOZZLE_AS_PROBE // this should probably be turned off (J. Case)
 #endif
 
 /**
@@ -1616,7 +1618,8 @@
 #endif
 
 // Most probes should stay away from the edges of the bed, but
-// with NOZZLE_AS_PROBE this can be negative for a wider probing area.
+// with NOZZLE_AS_PROBE this can be negative for a wider probing area. 
+// This should be changed if we change the probe (J. Case)
 #if defined (LULZBOT_BLTouch)
   #define PROBING_MARGIN 10 
 #else
@@ -2022,9 +2025,10 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-#if ANY(TAZPro, TAZProXT, Sidekick_289, Sidekick_747,LULZBOT_FILAMENT_RUNOUT)
-  #define FILAMENT_RUNOUT_SENSOR
-#endif
+// Turn off the filament runout sensor (J. Case)
+//#if ANY(TAZPro, TAZProXT, Sidekick_289, Sidekick_747,LULZBOT_FILAMENT_RUNOUT) 
+//  #define FILAMENT_RUNOUT_SENSOR
+//#endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #if defined (TAZ6)  //Standard Tool Head uses the filament runout port for the X-Max limit switch
     #define FIL_RUNOUT_ENABLED_DEFAULT false // Enable the sensor on startup. Override with M412 followed by M500.
@@ -2132,7 +2136,7 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-#define AUTO_BED_LEVELING_BILINEAR
+#define AUTO_BED_LEVELING_BILINEAR //- turn off bed leveling (J. Case)
 //#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
@@ -2141,7 +2145,7 @@
  * these options to restore the prior leveling state or to always enable
  * leveling immediately after G28.
  */
-#define RESTORE_LEVELING_AFTER_G28
+//#define RESTORE_LEVELING_AFTER_G28
 //#define ENABLE_LEVELING_AFTER_G28
 
 /**
@@ -2158,7 +2162,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-#define DEBUG_LEVELING_FEATURE
+#define DEBUG_LEVELING_FEATURE //- turn this off (J. Case)
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL, PROBE_MANUALLY)
   // Set a height for the start of manual adjustment
@@ -2562,9 +2566,10 @@
  *   Caveats: The ending Z should be the same as starting Z.
  * Attention: EXPERIMENTAL. G-code arguments may change.
  */
-#if DISABLED(Sidekick_289, Sidekick_747)
-  #define NOZZLE_CLEAN_FEATURE
-#endif
+// turn off the nozzle clean feature (J. Case)
+//#if DISABLED(Sidekick_289, Sidekick_747)
+//  #define NOZZLE_CLEAN_FEATURE
+//#endif
 
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
   #define CLEAN_SCRIPT "M117 Cleaning nozzle...\nG28 O\nM109 S170\nG12\nM106 S255\nM109 S170\nM77\nM117 Nozzle clean"
