@@ -89,8 +89,8 @@ void LevelingMenu::onRedraw(draw_mode_t what) {
     #if DISABLED (AUTO_BED_LEVELING_BILINEAR)
        .enabled(ENABLED(HAS_MESH))
        .tag(5).button(EDIT_MESH_POS, GET_TEXT_F(MSG_EDIT_MESH))
-       .enabled(ENABLED(G26_MESH_VALIDATION))
-       .tag(6).button(TEST_MESH_POS, GET_TEXT_F(MSG_PRINT_TEST))
+       //.enabled(ENABLED(G26_MESH_VALIDATION)) - remove this because I can't find TEST_MESH_POS (J. Case)
+       //.tag(6).button(TEST_MESH_POS, GET_TEXT_F(MSG_PRINT_TEST))
     #endif
     #if ENABLED(BLTOUCH)
        .tag(7).button(BLTOUCH_RESET_POS, GET_TEXT_F(MSG_BLTOUCH_RESET))

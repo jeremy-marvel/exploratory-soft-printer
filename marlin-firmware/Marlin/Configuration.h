@@ -1,28 +1,10 @@
-//#define LULZBOT_Hibiscus_Mini2
-//#define LULZBOT_Oliveoil_TAZ6
-//#define LULZBOT_Redgum_TAZWorkhorse
 #define LULZBOT_Quiver_TAZPro
-//#define LULZBOT_Gladiator_TAZProXT
-//#define LULZBOT_Sidekick_289
-//#define LULZBOT_Sidekick_747
-//#define LULZBOT_KangarooPaw_Experimental
 
 //#define TazDualZ
 #define LULZBOT_FILAMENT_RUNOUT
 /************** Uncomment a Tool Head Option From Below *********************/
 #define LULZBOT_UNIVERSAL_TOOLHEAD
-//#define TOOLHEAD_SL_SE_HE
-//#define TOOLHEAD_HS_HSPLUS
-//#define TOOLHEAD_H175
-//#define TOOLHEAD_M175
-//#define TOOLHEAD_SK175
-//#define TOOLHEAD_SK285
 //#define TOOLHEAD_Quiver_DualExtruder            // TAZ Pro Dual Extruder
-//#define TOOLHEAD_Albatross_Flexystruder         // TAZ Legacy Flexystruder
-//#define TOOLHEAD_Finch_Aerostruder              // TAZ Legacy Titan Aerostruder v1 0.50 mm
-//#define TOOLHEAD_Tilapia_SingleExtruder         // TAZ Legacy Standard Single Extruder 
-//#define TOOLHEAD_Yellowfin_DualExtruderV3       // TAZ Legacy Dual Extruder
-//#define TOOLHEAD_KangarooPaw_SingleExtruder     // Bio Single syringe
 
 /**
  * Marlin 3D Printer Firmware
@@ -120,94 +102,12 @@
 //#define CUSTOM_STATUS_SCREEN_IMAGE
 
 // @section machine
-#if defined(LULZBOT_Oliveoil_TAZ6)
-  #define TAZ6
-  #define LULZBOT_CUSTOM_MACHINE_NAME "LulzBot TAZ 6"
-  #define LULZBOT_LCD_MACHINE_NAME "TAZ 6"
-  #define LULZBOT_MACHINE_UUID "845f003c-aebd-4e53-a6b9-7d0984fde609"
-  #define LULZBOT_USE_Z_SCREW
-#endif
-
-#if defined(LULZBOT_Hibiscus_Mini2)
-  #define MiniV2
-  #define LULZBOT_CUSTOM_MACHINE_NAME "LulzBot Mini 2"
-  #define LULZBOT_LCD_MACHINE_NAME "Mini 2"
-  #define LULZBOT_MACHINE_UUID "e5502411-d46d-421d-ba3a-a20126d7930f"
-#endif
-
 #if defined(LULZBOT_Quiver_TAZPro)
   #define TAZPro
   #define LULZBOT_CUSTOM_MACHINE_NAME "LulzBot TAZ Pro"
   #define LULZBOT_LCD_MACHINE_NAME "TAZ Pro"
   #define LULZBOT_MACHINE_UUID "a952577d-8722-483a-999d-acdc9e772b7b"
   #define LULZBOT_USE_ARCHIM2
-#endif
-
-#if defined(LULZBOT_Gladiator_TAZProXT)
-  #define TAZProXT
-  #define LULZBOT_CUSTOM_MACHINE_NAME "LulzBot TAZ ProXT"
-  #define LULZBOT_LCD_MACHINE_NAME "TAZ ProXT"
-  #define LULZBOT_MACHINE_UUID "28ac1ce7-ca05-4f8e-8f1f-1d2f4496a1eb"
-  #define LULZBOT_USE_ARCHIM2
-#endif
-
-#if defined(LULZBOT_Redgum_TAZWorkhorse)
-  #define Workhorse
-  #define LULZBOT_CUSTOM_MACHINE_NAME "TAZ Workhorse Edition"
-  #define LULZBOT_LCD_MACHINE_NAME "LulzBot TAZ"
-  #define LULZBOT_MACHINE_UUID "5ee798fb-4062-4d35-8224-5e846ffb45a5"
-#endif
-
-#if defined(LULZBOT_Sidekick_289)
-  #define Sidekick_289
-  #define LULZBOT_CUSTOM_MACHINE_NAME "Taz SideKick 289"
-  #define LULZBOT_LCD_MACHINE_NAME "SideKick 289"
-  #define LULZBOT_MACHINE_UUID "2c6bb70e-20ef-4fb1-962d-c71d40e176b6"
-  #define LULZBOT_BLTouch
-  #define LULZBOT_SENSORLESS_HOMING
-  #define LULZBOT_USE_EINSY_RETRO
-  #define Z_AXIS_WILL_FALL
-#endif
-
-#if defined(LULZBOT_Sidekick_747)
-  #define Sidekick_747
-  #define LULZBOT_CUSTOM_MACHINE_NAME "Taz SideKick 747"
-  #define LULZBOT_LCD_MACHINE_NAME "SideKick 747"
-  #define LULZBOT_MACHINE_UUID "5b3d61d6-80f8-41ed-bd8a-9c765f8d523d"
-  #define LULZBOT_BLTouch
-  #define LULZBOT_SENSORLESS_HOMING
-  #define LULZBOT_USE_EINSY_RETRO
-  #define Z_AXIS_WILL_FALL
-#endif
-
-/* Unsupported or unreleased experimental configurations. Use at your own risk. */
-#if defined(LULZBOT_KangarooPaw_Experimental)
-  #define Bio
-  #define LULZBOT_CUSTOM_MACHINE_NAME "KangarooPaw"
-  #define LULZBOT_LCD_MACHINE_NAME "KangarooPaw"
-  #define LULZBOT_NO_EXTRUDER_HEATER
-  #define LULZBOT_USE_AUTOLEVELING
-  #define LULZBOT_USE_EINSY_RETRO
-  #define LULZBOT_SENSORLESS_HOMING
-  #define LULZBOT_BACKLASH_COMPENSATION
-  #define LULZBOT_BIOPRINTER_GCODE
-  #define LULZBOT_USE_NORMALLY_CLOSED_ENDSTOPS
-  #define LULZBOT_STEALTHCHOP_Z
-  #define LULZBOT_HYBRID_THRESHOLD
-  #define LULZBOT_BAUDRATE 250000
-  #define LULZBOT_PRINTCOUNTER
-  #define LULZBOT_MACHINE_UUID "9a1d8eee-7118-40a7-942d-9541f35667dd"
-// Kangaroo Paw uses a 480x272 display and USB flashdrive
-  #define LULZBOT_USE_TOUCH_UI
-  #define LULZBOT_USE_BIOPRINTER_UI
-  #define LCD_ALEPHOBJECTS_CLCD_UI
-  #define USE_PORTRAIT_ORIENTATION
-  #define AO_EXP1_PINOUT_REV_C
-  #define LCD_480x272
-  #define LULZBOT_SDSUPPORT
-  #define LULZBOT_USB_FLASH_DRIVE_SUPPORT
-  #define LULZBOT_USB_USE_UHS3
-  //#define LULZBOT_MANUAL_USB_STARTUP
 #endif
 
 /**
@@ -320,60 +220,6 @@
 
 /****************************** TAZ 4/5/6 TOOLHEADS ********************************/
 
-#if defined(TOOLHEAD_Yellowfin_DualExtruderV3)
-    // Prototype Dual v3 for TAZ.
-    #define LULZBOT_LCD_TOOLHEAD_NAME              "Dual Extruder 3"
-//          16 chars max                            ^^^^^^^^^^^^^^^
-    #define LULZBOT_M115_EXTRUDER_TYPE         "DualExtruder v3"
-    #define LULZBOT_MOTOR_CURRENT_E0           177 // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
-    #define LULZBOT_MOTOR_CURRENT_E1           177 // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
-    #define LULZBOT_EXTRUDERS                  2
-    #define LULZBOT_TEMP_SENSOR_1              5
-    #define LULZBOT_DISTINCT_E_FACTORS
-    #define LULZBOT_TOOLHEAD_X_MIN_ADJ        -6
-    #define LULZBOT_TOOLHEAD_X_MAX_ADJ        -21
-    #define LULZBOT_TOOLHEAD_Y_MIN_ADJ        -7
-    #define LULZBOT_TOOLHEAD_Y_MAX_ADJ        -7
-    #define LULZBOT_TOOLHEAD_Z_MAX_ADJ         0
-    #define LULZBOT_TOOLHEAD_Z_MIN_ADJ         0
-    #define LULZBOT_TOOLCHANGE_ZRAISE          2
-    #define LULZBOT_HOTEND_OFFSET_X           {0.0, 13}
-    #define LULZBOT_HOTEND_OFFSET_Y           {0.0,  0}
-    #if defined(LULZBOT_USE_HOME_BUTTON)
-        // Legacy configuration for TAZ 6 with homing button riser
-        #define LULZBOT_MANUAL_Z_HOME_POS             5.5
-        #undef  LULZBOT_Z_SAFE_HOMING_X_POINT
-        #undef  LULZBOT_Z_SAFE_HOMING_Y_POINT
-        #define LULZBOT_Z_SAFE_HOMING_X_POINT         (-26)
-        #define LULZBOT_Z_SAFE_HOMING_Y_POINT         (258)
-        #undef  LULZBOT_Z_HOMING_HEIGHT
-        #define LULZBOT_Z_HOMING_HEIGHT                10
-        #undef  LULZBOT_Z_CLEARANCE_DEPLOY_PROBE
-        #define LULZBOT_Z_CLEARANCE_DEPLOY_PROBE       10
-        #undef  LULZBOT_Z_CLEARANCE_BETWEEN_PROBES
-        #define LULZBOT_Z_CLEARANCE_BETWEEN_PROBES     10
-        #define LULZBOT_SWAP_EXTRUDERS
-       // #define LULZBOT_NO_MOVE_ON_TOOLHEAD_CHANGE
-        #define LULZBOT_EXTRUDER_FAN_ON_PIN_6 // For backwards compatibility with TAZ 4
-        #define LULZBOT_X_MAX_ENDSTOP_INVERTING LULZBOT_NORMALLY_CLOSED_ENDSTOP
-    #endif
-    #ifdef TOOLHEAD_Yellowfin_DualExtruderV3
-        // The nozzles on Yellowfin are too close together
-        // to run the calibration routine on the cube
-        #undef LULZBOT_HAS_CALIBRATION_CUBE
-        #undef LULZBOT_CALIBRATION_GCODE
-    #endif
-    // Adjust so left nozzle probes on the left washers;
-    // right nozzles on the right nozzle.
-    #undef  LULZBOT_STANDARD_RIGHT_PROBE_BED_POSITION
-    #define LULZBOT_STANDARD_RIGHT_PROBE_BED_POSITION          275
-    #undef  LULZBOT_INVERT_E1_DIR
-    #define LULZBOT_INVERT_E1_DIR                 false
-    #define LULZBOT_E_STEPS                        760
-    #define LULZBOT_E3D_SOMEstruder_x2
-    #define LULZBOT_LEGACY_TAZ_MOUNT
-#endif /* TOOLHEAD_Yellowfin_DualExtruderV3 */
-
 /******************************** UNIVERSAL TOOLHEADS *************************/
 #if defined(LULZBOT_UNIVERSAL_TOOLHEAD) || ANY(TOOLHEAD_SK285,TOOLHEAD_SK175,TOOLHEAD_M175,TOOLHEAD_H175,TOOLHEAD_SL_SE_HE, TOOLHEAD_HS_HSPLUS)
   #define LULZBOT_UNIVERSAL_MOUNT
@@ -395,21 +241,6 @@
 #if defined(TOOLHEAD_SL_SE_HE)
   #undef LULZBOT_M115_EXTRUDER_TYPE
   #define LULZBOT_M115_EXTRUDER_TYPE       "Titan Areo"
-#elif defined(TOOLHEAD_HS_HSPLUS)
-  #undef LULZBOT_M115_EXTRUDER_TYPE
-  #define LULZBOT_M115_EXTRUDER_TYPE       "Titan Areo Volcano"
-#elif defined(TOOLHEAD_H175)
-  #undef LULZBOT_M115_EXTRUDER_TYPE
-  #define LULZBOT_M115_EXTRUDER_TYPE       "H175"
-#elif defined(TOOLHEAD_M175)
-  #undef LULZBOT_M115_EXTRUDER_TYPE
-  #define LULZBOT_M115_EXTRUDER_TYPE       "M175v2"
-#elif defined(TOOLHEAD_SK175)
-  #undef LULZBOT_M115_EXTRUDER_TYPE
-  #define LULZBOT_M115_EXTRUDER_TYPE       "SK175"
-#elif defined(TOOLHEAD_SK285)
-  #undef LULZBOT_M115_EXTRUDER_TYPE
-  #define LULZBOT_M115_EXTRUDER_TYPE       "SK285"
 #endif
 
 /*********************************** TAZ PRO TOOLHEADS ************************/
@@ -443,19 +274,6 @@
     #define SWITCHING_NOZZLE
 #endif /* TOOLHEAD_Quiver_DualExtruder */
 
-/********************************* OTHER TOOLHEADS ***************************/
-
-#if defined(TOOLHEAD_KangarooPaw_SingleExtruder)
-    #define LULZBOT_LCD_TOOLHEAD_NAME              "Goostruder"
-//          16 chars max                            ^^^^^^^^^^^^^^^
-    #define LULZBOT_M115_EXTRUDER_TYPE             "SingleExtruder"
-    #define LULZBOT_Z_CLEARANCE_DEPLOY_PROBE       30
-    #undef  LULZBOT_Z_CLEARANCE_BETWEEN_PROBES
-    #define LULZBOT_Z_CLEARANCE_BETWEEN_PROBES     30
-    #define LULZBOT_MOTOR_CURRENT_E          350 // mA
-    #define LULZBOT_X_MAX_ENDSTOP_INVERTING        LULZBOT_NORMALLY_CLOSED_ENDSTOP
-    #define LULZBOT_E_STEPS                        9448.8
-#endif /* TOOLHEAD_KangarooPaw_SingleExtruder */
 // This defines the number of extruders
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
 #define EXTRUDERS LULZBOT_EXTRUDERS
@@ -1488,7 +1306,7 @@
  * Use G29 repeatedly, adjusting the Z height at each point with movement commands
  * or (with LCD_BED_LEVELING) the LCD controller.
  */
-//#define PROBE_MANUALLY
+#define PROBE_MANUALLY
 
 /**
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
@@ -1501,7 +1319,7 @@
  * nozzle system or a piezo-electric smart effector.
  */
 #if DISABLED(Sidekick_289, Sidekick_747)
-  #define NOZZLE_AS_PROBE // this should probably be turned off (J. Case)
+  //#define NOZZLE_AS_PROBE // this should probably be turned off (J. Case)
 #endif
 
 /**
@@ -1630,7 +1448,7 @@
   #elif ENABLED(Workhorse)
     #define PROBING_MARGIN -10
   #elif ANY(TAZPro, TAZProXT)
-    #define PROBING_MARGIN -9
+    #define PROBING_MARGIN 10 //-9 edit this (J. Case)
   #endif
 #endif
 
@@ -1647,7 +1465,7 @@
   #if defined(TOOLHEAD_Quiver_DualExtruder)
     #define PROBE_SAFE_POINT { -6, -9 } //safe probe point for dual extruder on Pro/XT
   #else
-    #define PROBE_SAFE_POINT { -1, -9 } //safe probe point for single extruder toolheads on Pro/XT
+    #define PROBE_SAFE_POINT { X_CENTER, Y_CENTER }//{ -1, -9 } //safe probe point for single extruder toolheads on Pro/XT - edit this (J. Case)
   #endif
 #endif
 
@@ -1728,7 +1546,7 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 5
 
 // Enable the M48 repeatability test to test probe accuracy
-#define Z_MIN_PROBE_REPEATABILITY_TEST
+//#define Z_MIN_PROBE_REPEATABILITY_TEST (turn this off for manual probing - J. Case)
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -2136,9 +1954,9 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-#define AUTO_BED_LEVELING_BILINEAR //- turn off bed leveling (J. Case)
+//#define AUTO_BED_LEVELING_BILINEAR //- turn off bed leveling (J. Case)
 //#define AUTO_BED_LEVELING_UBL
-//#define MESH_BED_LEVELING
+#define MESH_BED_LEVELING // turn this on (J. Case)
 
 /**
  * Normally G28 leaves leveling disabled on completion. Enable one of
@@ -2162,7 +1980,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-#define DEBUG_LEVELING_FEATURE //- turn this off (J. Case)
+//#define DEBUG_LEVELING_FEATURE //- turn this off (J. Case)
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL, PROBE_MANUALLY)
   // Set a height for the start of manual adjustment
@@ -2284,6 +2102,7 @@
 #if ANY(Sidekick_289, Sidekick_747)
   #define LCD_BED_LEVELING
 #endif
+//#define LCD_BED_LEVELING // add this feature (J. Case) - not an option for non programmable LCD
 
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
@@ -2358,12 +2177,13 @@
 #if ANY(TAZ6, Sidekick_289, Sidekick_747)
   #define Z_SAFE_HOMING
 #endif
+#define Z_SAFE_HOMING // enable this (J. Case)
 
 #if ENABLED(Z_SAFE_HOMING)
   #if ENABLED(TAZ6)
     #define Z_SAFE_HOMING_X_POINT -20.1  // X point for Z homing
     #define Z_SAFE_HOMING_Y_POINT 259.5  // Y point for Z homing
-  #elif ANY(Sidekick_289, Sisdekick_747)
+  #else //#elif ANY(Sidekick_289, Sisdekick_747) edit this (J. Case)
     #define Z_SAFE_HOMING_X_POINT (X_CENTER)  // X point for Z homing
     #define Z_SAFE_HOMING_Y_POINT (Y_BED_SIZE/2)  // Y point for Z homing
   #endif

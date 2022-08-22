@@ -1933,7 +1933,8 @@
 
   //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
 
-  #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
+  // turn off BABYSTEP_ZPROBE_OFFSET because we are using a manual probe - J. Case
+  //#define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
     //#define BABYSTEP_HOTEND_Z_OFFSET      // For multiple hotends, babystep relative Z offsets
     #if DISABLED(TAZPro, TAZProXT)
@@ -2027,7 +2028,7 @@
 // remove this because there is no leveling (J. Case)
 #if true
   #if DISABLED(Sidekick_289, Sidekick_747)
-    #define G29_RETRY_AND_RECOVER
+    //#define G29_RETRY_AND_RECOVER - turn this off because we are using manual bed leveling
   #endif
   #if ENABLED(G29_RETRY_AND_RECOVER)
     #define G29_MAX_RETRIES 3
