@@ -898,8 +898,8 @@
  *
  * *** IT IS HIGHLY RECOMMENDED TO LEAVE THIS OPTION ENABLED! ***
  */
-#define PREVENT_COLD_EXTRUSION
-#define EXTRUDE_MINTEMP 140
+//#define PREVENT_COLD_EXTRUSION
+#define EXTRUDE_MINTEMP 20//140 - move this down J. Case
 
 /**
  * Prevent a single extrusion longer than EXTRUDE_MAXLENGTH.
@@ -1681,40 +1681,7 @@
 // @section machine
 
 // The size of the printable area
-#if ENABLED(MiniV2)
-  #define X_BED_SIZE 160
-  #define Y_BED_SIZE 165
-  // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define LULZBOT_X_MIN_POS -4.25
-  #define LULZBOT_Y_MIN_POS -5
-  #define LULZBOT_Z_MIN_POS 0
-  #define LULZBOT_X_MAX_POS 161.5
-  #define LULZBOT_Y_MAX_POS 193
-  #define LULZBOT_Z_MAX_POS 183
-
-#elif ENABLED(TAZ6)
-  #define X_BED_SIZE 280
-  #define Y_BED_SIZE 285
-  // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define LULZBOT_X_MIN_POS -20.1
-  #define LULZBOT_Y_MIN_POS -21.6
-  #define LULZBOT_Z_MIN_POS 0
-  #define LULZBOT_X_MAX_POS 292
-  #define LULZBOT_Y_MAX_POS 303.5
-  #define LULZBOT_Z_MAX_POS 257.7
-
-#elif ENABLED(Workhorse)
-  #define X_BED_SIZE 280
-  #define Y_BED_SIZE 280
-  // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define LULZBOT_X_MIN_POS -50
-  #define LULZBOT_Y_MIN_POS -17
-  #define LULZBOT_Z_MIN_POS -2
-  #define LULZBOT_X_MAX_POS 293
-  #define LULZBOT_Y_MAX_POS 308
-  #define LULZBOT_Z_MAX_POS 297
-
-#elif ENABLED(TAZPro) 
+#if ENABLED(TAZPro) 
    #if defined(TOOLHEAD_Quiver_DualExtruder)
     #define X_BED_SIZE 281
     #define Y_BED_SIZE 283
@@ -1735,50 +1702,7 @@
     #define LULZBOT_Y_MAX_POS 318
     #define LULZBOT_Z_MIN_POS -9
     #define LULZBOT_Z_MAX_POS 299 
-  #endif
-#elif ENABLED(TAZProXT)
-    #if defined(TOOLHEAD_Quiver_DualExtruder)
-    #define X_BED_SIZE 281
-    #define Y_BED_SIZE 283
-    // Travel limits (mm) after homing, corresponding to endstop positions.
-    #define LULZBOT_X_MIN_POS -6// <-- changed
-    #define LULZBOT_Y_MIN_POS -13 // <-- changed
-    #define LULZBOT_X_MAX_POS 308 // <-- changed
-    #define LULZBOT_Y_MAX_POS 315 // <-- changed
-    #define LULZBOT_Z_MIN_POS -9 // <-- changed
-    #define LULZBOT_Z_MAX_POS 599 // <-- changed 
-  #else
-    #define X_BED_SIZE 284
-    #define Y_BED_SIZE 286
-    // Travel limits (mm) after homing, corresponding to endstop positions.
-    #define LULZBOT_X_MIN_POS -1
-    #define LULZBOT_Y_MIN_POS -9
-    #define LULZBOT_X_MAX_POS 313
-    #define LULZBOT_Y_MAX_POS 318
-    #define LULZBOT_Z_MIN_POS -9
-    #define LULZBOT_Z_MAX_POS 599 
-  #endif
-#elif defined(Sidekick_289)
-  #define X_BED_SIZE 161           
-  #define Y_BED_SIZE 161            
-  // Travel limits (mm) after homing, corresponding to endstop positions.  
-  #define LULZBOT_X_MAX_POS  164   
-  #define LULZBOT_X_MIN_POS  -5.5  
-  #define LULZBOT_Y_MAX_POS  168   
-  #define LULZBOT_Y_MIN_POS  -34   
-  #define LULZBOT_Z_MIN_POS  0     
-  #define LULZBOT_Z_MAX_POS  181.5 
-
-#elif defined(Sidekick_747)
-  #define X_BED_SIZE 231            
-  #define Y_BED_SIZE 231            
-  // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define LULZBOT_X_MAX_POS  230   
-  #define LULZBOT_X_MIN_POS  -1.5     
-  #define LULZBOT_Y_MAX_POS  233    
-  #define LULZBOT_Y_MIN_POS  -23    
-  #define LULZBOT_Z_MIN_POS  0      
-  #define LULZBOT_Z_MAX_POS  244.5    
+  #endif   
 #endif
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
