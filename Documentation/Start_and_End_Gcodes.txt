@@ -1,0 +1,63 @@
+Start Gcode:
+;This G-Code has been generated specifically for LulzBot TAZ Pro with SE Tool Head - edited by J. Case 8/22/2023 for printing soft materials
+;
+;The following lines can be uncommented for printer specific fine tuning
+;More information can be found at https://marlinfw.org/meta/gcode/
+;
+;M92 E420                 ;Set Axis Steps-per-unit
+;M301 P21.0 I1.78 D61.93  ;Set Hotend PID
+;M906 E960                ;TMC Motor Current
+;
+M73 P0                  ; clear LCD progress bar
+M75 					; Start LCD Print Timer
+G26 					; clear potential 'probe fail' condition
+M107 					; disable fans
+M420 S0                 ; disable leveling matrix
+G90 					; absolute positioning
+M82 					; set extruder to absolute mode
+G92 E0 					; set extruder position to 0
+M140 S{material_bed_temperature_layer_0} ; start bed heating up
+G28 					; home all axes
+G0 X145 Y187 Z156 F3000 			; move away from endstops
+M117 Q - SE Heating Up...			; progress indicator message on LCD
+;M109 R{material_soften_temperature} 	; soften filament before retraction
+;M117 Q - SE Retracting Filament...			; progress indicator message on LCD
+;G1 E-15 F75 				; retract filament
+;M109 R{material_wipe_temperature}                  ; wait for extruder to reach wiping temp
+;M206 X0 Y0 Z0              ; uncomment to adjust wipe position (+X ~ nozzle moves left)(+Y ~ nozzle moves forward)(+Z ~ nozzle moves down)
+;G12                         ; wiping sequence
+M206 X0 Y0 Z0               ; reseting stock nozzle position ### CAUTION: changing this line can affect print quality ###
+;G1 X0 Y0 F3000				; move toward first probe point
+;M109 R{material_probe_temperature}	; wait for extruder to reach probe temp
+;M204 S300				; set probing acceleration
+;G29					; start auto-leveling sequence
+;M420 S1                     ; enable leveling matrix
+;M425 Z			     		; use measured Z backlash for compensation
+;M425 Z F0		     		; turn off measured Z backlash compensation. (if activated in the quality settings, this command will automatically be ignored)
+;M204 S2000				; restore standard acceleration
+;G1 X5 Y15 Z10 F5000			; move up off last probe point
+;G4 S1					; pause
+M400					; wait for moves to finish
+M117 Heating...				; progress indicator message on LCD
+M109 R{material_print_temperature_layer_0} ; wait for extruder to reach initial printing temp
+M190 R{material_bed_temperature_layer_0} ; wait for bed to reach printing temp
+G1 Z2 E0 F75				; prime tiny bit of filament into the nozzle
+M117 Q - SE Printing...		; progress indicator message on LCD
+
+End Gcode:
+M400                                      ; wait for moves to finish
+M140 S{material_part_removal_temperature} ; start bed cooling
+M104 S0                                   ; disable hotend
+M107                                      ; disable fans
+;G92 E5                                    ; set extruder to 5mm for retract on print end
+M117 Cooling please wait                  ; progress indicator message on LCD
+G1 X5 Y5 Z290 E0 F3000                    ; move to cooling position
+;G1 E5                                     ; re-prime extruder
+M190 R{material_part_removal_temperature} ; wait for bed to cool down to removal temp
+G1 X145 F1000                             ; move extruder out of the way
+G1 Y260 F1000                             ; present finished print
+M140 S{material_keep_part_removal_temperature_t}; keep temperature or cool down
+M77					  ; End LCD Print Timer
+G90                                       ; absolute positioning
+M18 X Y E				  ; turn off x y and e axis
+M117 Print Complete.                      ; print complete message
