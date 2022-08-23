@@ -146,7 +146,9 @@ namespace Language_en {
   PROGMEM Language_Str MSG_LEVEL_CORNERS_LAST_Z            = _UxGT("Last Z: ");
   PROGMEM Language_Str MSG_NEXT_CORNER                     = _UxGT("Next Corner");
   PROGMEM Language_Str MSG_MESH_EDITOR                     = _UxGT("Mesh Editor");
+  PROGMEM Language_Str MSG_MESH_VIEWER                     = _UxGT("Mesh Viewer");
   PROGMEM Language_Str MSG_EDIT_MESH                       = _UxGT("Edit Mesh");
+  PROGMEM Language_Str MSG_MESH_VIEW                       = _UxGT("View Mesh");
   PROGMEM Language_Str MSG_EDITING_STOPPED                 = _UxGT("Mesh Editing Stopped");
   PROGMEM Language_Str MSG_PROBING_MESH                    = _UxGT("Probing Point");
   PROGMEM Language_Str MSG_MESH_X                          = _UxGT("Index X");
