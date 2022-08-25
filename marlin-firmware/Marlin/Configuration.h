@@ -1879,8 +1879,8 @@
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR //- turn off bed leveling (J. Case)
-//#define AUTO_BED_LEVELING_UBL
-#define MESH_BED_LEVELING // turn this on (J. Case)
+#define AUTO_BED_LEVELING_UBL // turn this on (J. Case)
+//#define MESH_BED_LEVELING // turn this on (J. Case)
 
 /**
  * Normally G28 leaves leveling disabled on completion. Enable one of
@@ -1992,7 +1992,7 @@
   //#define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
   #define MESH_INSET 0              // Set Mesh bounds as an inset region of the bed
-  #define GRID_MAX_POINTS_X 2      // Don't use more than 15 points per axis, implementation limited.
+  #define GRID_MAX_POINTS_X 3 // must be between 3-15 (J. Case)      // Don't use more than 15 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   #define UBL_HILBERT_CURVE       // Use Hilbert distribution for less travel when probing multiple points

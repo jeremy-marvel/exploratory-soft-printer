@@ -31,8 +31,12 @@
 #include "theme/theme.h"
 #include "generic/string_format.h"
 
+// comment out - J. Case
+//#ifndef BED_LEVELING_COMMANDS
+//  #define BED_LEVELING_COMMANDS "G28O\nG29\nM77"
+//#endif
 #ifndef BED_LEVELING_COMMANDS
-  #define BED_LEVELING_COMMANDS "G28O\nG29\nM77"
+  #define BED_LEVELING_COMMANDS "G29"
 #endif
 
 extern tiny_timer_t refresh_timer;
