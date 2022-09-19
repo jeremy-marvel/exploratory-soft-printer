@@ -45,9 +45,9 @@ M206 X0 Y0 Z0               ; reseting stock nozzle position ### CAUTION: changi
 ;G4 S1					; pause
 M400					; wait for moves to finish
 M117 Heating...				; progress indicator message on LCD
-M109 R30.0 ; wait for extruder to reach initial printing temp
+M109 R25.0 ; wait for extruder to reach initial printing temp
 M190 R25.0 ; wait for bed to reach printing temp
-G1 Z2 E0 F75				; prime tiny bit of filament into the nozzle
+;G1 Z2 E0 F75				; prime tiny bit of filament into the nozzle
 M117 Q - SE Printing...		; progress indicator message on LCD
 
 M221 S100 T0
