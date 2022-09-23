@@ -1246,7 +1246,8 @@
 // @section lcd
 
 #if EITHER(IS_ULTIPANEL, EXTENSIBLE_UI)
-  #define MANUAL_FEEDRATE { 50*60, 50*60, 50*60, 50*60 } // (mm/min) Feedrates for manual moves along X, Y, Z, E from panel - increase extruder speed from 2*60 J. Case
+  #define MANUAL_FEEDRATE { 50*60, 50*60, 50*60, 10*60 } // (mm/min) Feedrates for manual moves along X, Y, Z, E from panel - increase extruder speed from 2*60 J. Case
+  // J. Case - 50*60 extruder speed is too fast, 10*60 is fine but skips at beginning
   #define FINE_MANUAL_MOVE 0.025    // (mm) Smallest manual move (< 0.1mm) applying to Z on most machines
   #if IS_ULTIPANEL
     #define MANUAL_E_MOVES_RELATIVE // Display extruder move distance rather than "position"
