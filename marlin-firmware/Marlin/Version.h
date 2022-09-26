@@ -28,25 +28,25 @@
 /**
  * Marlin release version identifier
  */
-#define SHORT_BUILD_VERSION LULZBOT_FW_VERSION
+#define SHORT_BUILD_VERSION NIST_VERSION
 
 /**
  * Verbose version identifier which should contain a reference to the location
  * from where the binary was downloaded or the source code was compiled.
  */
-#define DETAILED_BUILD_VERSION " FIRMWARE_VERSION:" SHORT_BUILD_VERSION " EXTRUDER_TYPE:" LULZBOT_M115_EXTRUDER_TYPE
+#define DETAILED_BUILD_VERSION " FIRMWARE_VERSION:" SHORT_BUILD_VERSION " EXTRUDER_TYPE:" NIST_M115_EXTRUDER_TYPE
 
 /**
  * The STRING_DISTRIBUTION_DATE represents when the binary file was built,
  * here we define this default string as the date where the latest release
  * version was tagged.
  */
-#define STRING_DISTRIBUTION_DATE "2021-06-15"
+#define STRING_DISTRIBUTION_DATE "2022-09-24"
 
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
  */
-#define MACHINE_NAME LULZBOT_CUSTOM_MACHINE_NAME
+#define MACHINE_NAME NIST_CUSTOM_MACHINE_NAME
 
 /**
  * The SOURCE_CODE_URL is the location where users will find the Marlin Source
@@ -54,25 +54,23 @@
  * has a distinct Github fork— the Source Code URL should just be the main
  * Marlin repository.
  */
-#define SOURCE_CODE_URL "https://gitlab.com/lulzbot3d/marlin"
+#define SOURCE_CODE_URL "https://github.com/jcase-robots/exploratory-soft-printer"
 
 /**
  * Default generic printer UUID.
  */
-#define DEFAULT_MACHINE_UUID LULZBOT_MACHINE_UUID
+#define DEFAULT_MACHINE_UUID NIST_MACHINE_UUID
 
 /**
  * The WEBSITE_URL is the location where users can get more information such as
  * documentation about a specific Marlin release.
  */
-#define WEBSITE_URL "www.lulzbot.com"
+#define WEBSITE_URL "https://github.com/jcase-robots/exploratory-soft-printer"
 
 /**
  * Set the vendor info the serial USB interface, if changable
  * Currently only supported by DUE platform
  */
-#if ANY(TAZPro, TAZProXT)
-  #define USB_DEVICE_VENDOR_ID 0x27b1
-  #define USB_DEVICE_PRODUCT_ID 0x0001
-#endif
+#define USB_DEVICE_VENDOR_ID 0x27b1
+#define USB_DEVICE_PRODUCT_ID 0x0001
 //#define USB_DEVICE_MANUFACTURE_NAME    WEBSITE_URL

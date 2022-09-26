@@ -469,15 +469,8 @@
  */
 #define USE_CONTROLLER_FAN
 #if ENABLED(USE_CONTROLLER_FAN)
-  #if ANY(MiniV2, TAZPro, TAZProXT, Sidekick_289, Sidekick_747)
-    #define CONTROLLER_FAN_PIN FAN1_PIN        // Set a custom pin for the controller fan
-  #else
-    #define CONTROLLER_FAN_PIN FAN2_PIN        // Set a custom pin for the controller fan
-  #endif
+  #define CONTROLLER_FAN_PIN FAN1_PIN        // Set a custom pin for the controller fan
   //#define CONTROLLER_FAN_USE_Z_ONLY    // With this option only the Z axis is considered
-  #if ENABLED(MiniV2)
-    #define CONTROLLER_FAN_IGNORE_Z      // Ignore Z stepper. Useful when stepper timeout is disabled.
-  #endif
   #define CONTROLLERFAN_SPEED_MIN      0 // (0-255) Minimum speed. (If set below this value the fan is turned off.)
   #define CONTROLLERFAN_SPEED_ACTIVE 255 // (0-255) Active speed, used when any motor is enabled
   #define CONTROLLERFAN_SPEED_IDLE   120 // (0-255) Idle speed, used when motors are disabled
@@ -760,18 +753,7 @@
  * Homing (G28) does an indefinite move towards the endstops to establish
  * the position of the toolhead relative to the workspace.
  */
-
-#if ANY(MiniV2, TAZPro, TAZProXT, Sidekick_289, Sidekick_747)
-  #define SENSORLESS_BACKOFF_MM  { 4, 4 , 0}     // (mm) Backoff from endstops before sensorless homing
-#else
-  #if defined(Workhorse)
-    #define HOMING_BACKOFF_POST_MM { 2, 2, 0 }  // (mm) Backoff from endstops after homing
-    #define QUICK_HOME                          // If G28 contains XY do a diagonal move first
-  #elif defined(TAZ6)
-    #define HOMING_BACKOFF_POST_MM { 2, 2, 16 }  // (mm) Backoff from endstops after homing
-    #define QUICK_HOME                          // If G28 contains XY do a diagonal move first
-  #endif
-#endif
+#define SENSORLESS_BACKOFF_MM  { 4, 4 , 0}     // (mm) Backoff from endstops before sensorless homing
 
 #define HOMING_BUMP_MM      { 5, 5, 2 }       // (mm) Backoff from endstops after first bump
 #define HOMING_BUMP_DIVISOR { 2, 2, 4 }       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
@@ -969,16 +951,8 @@
  */
 #define DEFAULT_STEPPER_DEACTIVE_TIME 600
 #define DISABLE_INACTIVE_X true
-#if ANY(Sidekick_289, Sidekick_747)
-  #define DISABLE_INACTIVE_Y false
-#else
-  #define DISABLE_INACTIVE_Y true
-#endif
-//#if ANY(TAZPro, TAZProXT, Workhorse)
- // #define DISABLE_INACTIVE_Z true  // Set to false if the nozzle will fall down on your printed part when print has finished.
-//#else
-  #define DISABLE_INACTIVE_Z false
-//#endif
+#define DISABLE_INACTIVE_Y true
+#define DISABLE_INACTIVE_Z false
 #define DISABLE_INACTIVE_I true
 #define DISABLE_INACTIVE_J true
 #define DISABLE_INACTIVE_K true
@@ -1022,13 +996,8 @@
 #if ENABLED(BACKLASH_COMPENSATION)
   // Define values for backlash distance and correction.
   // If BACKLASH_GCODE is enabled these values are the defaults.
-  #if ANY(TAZPro, TAZProXT)
-    #define BACKLASH_DISTANCE_MM {0.252, 0.183, 0.075} //  (mm)
-    #define BACKLASH_CORRECTION    1.0 //  0.0 = no correction; 1.0 = full correction
-  #else
-    #define BACKLASH_DISTANCE_MM { 0, 0, 0 } // (mm)
-    #define BACKLASH_CORRECTION    0.0       // 0.0 = no correction; 1.0 = full correction
-  #endif
+  #define BACKLASH_DISTANCE_MM {0.252, 0.183, 0.075} //  (mm)
+  #define BACKLASH_CORRECTION    1.0 //  0.0 = no correction; 1.0 = full correction
 
   // Add steps for motor direction changes on CORE kinematics
   //#define CORE_BACKLASH
@@ -1068,9 +1037,7 @@
  * Note: HOTEND_OFFSET and CALIBRATION_OBJECT_CENTER must be set to within
  *       ±5mm of true values for G425 to succeed.
  */
-#if ANY(TAZPro,TAZProXT,Workhorse)
-  #define CALIBRATION_GCODE
-#endif
+#define CALIBRATION_GCODE
 #if ENABLED(CALIBRATION_GCODE)
 
   //#define CALIBRATION_SCRIPT_PRE  "M117 Starting Auto-Calibration\nT0\nG28\nG12\nM117 Calibrating..."
@@ -1090,52 +1057,20 @@
   //#define CALIBRATION_REPORTING
 
   // The true location and dimension the cube/bolt/washer on the bed.
-  #if ENABLED(MiniV2)
-    #define CALIBRATION_OBJECT_CENTER     {169.5, 171.3, 0} //  mm
-    #define CALIBRATION_OBJECT_DIMENSIONS {22.0, 22.0, 1.5} //  mm
-
-    // Comment out any sides which are unreachable by the probe. For best
-    // auto-calibration results, all sides must be reachable.
-    //#define CALIBRATION_MEASURE_RIGHT
+  #if defined(TOOLHEAD_Quiver_DualExtruder)
+    #define CALIBRATION_OBJECT_CENTER     {261.5, -18, -2.0} //  mm
+    #define CALIBRATION_OBJECT_DIMENSIONS {10.0, 10.0, 10.0} //  mm
     #define CALIBRATION_MEASURE_FRONT
-    #define CALIBRATION_MEASURE_LEFT
-    //#define CALIBRATION_MEASURE_BACK
-  #elif ENABLED(TAZ6)
-    #define CALIBRATION_OBJECT_CENTER     { -14, -11.0,  0 } // mm
-    #define CALIBRATION_OBJECT_DIMENSIONS {22.0, 22.0, 1.5} // mm
-
-    // Comment out any sides which are unreachable by the probe. For best
-    // auto-calibration results, all sides must be reachable.
-    #define CALIBRATION_MEASURE_RIGHT
-    //#define CALIBRATION_MEASURE_FRONT
-    #define CALIBRATION_MEASURE_LEFT
-    #define CALIBRATION_MEASURE_BACK
-  #elif ENABLED(Workhorse)
-    #define CALIBRATION_OBJECT_CENTER     { 266, -17.0,-2.0 } // mm True location is -22 in y but object size is accounting for location change
-    #define CALIBRATION_OBJECT_DIMENSIONS { 10.0, 4.0,  10.0 } // mm 
-
-    // Comment out any sides which are unreachable by the probe. For best
-    // auto-calibration results, all sides must be reachable.
-    #define CALIBRATION_MEASURE_RIGHT
-    //#define CALIBRATION_MEASURE_FRONT
-    #define CALIBRATION_MEASURE_LEFT
-    #define CALIBRATION_MEASURE_BACK
-  #elif ANY(TAZPro, TAZProXT)
-    #if defined(TOOLHEAD_Quiver_DualExtruder)
-      #define CALIBRATION_OBJECT_CENTER     {261.5, -18, -2.0} //  mm
-      #define CALIBRATION_OBJECT_DIMENSIONS {10.0, 10.0, 10.0} //  mm
-      #define CALIBRATION_MEASURE_FRONT
-    #else
-      #define CALIBRATION_OBJECT_CENTER     {267.5,-9.5,-2.0} //  mm
-      #define CALIBRATION_OBJECT_DIMENSIONS {10.0,  1.0, 10.0} //  mm
-    #endif
-    // Comment out any sides which are unreachable by the probe. For best
-    // auto-calibration results, all sides must be reachable.
-    #define CALIBRATION_MEASURE_RIGHT
-    //#define CALIBRATION_MEASURE_FRONT
-    #define CALIBRATION_MEASURE_LEFT
-    #define CALIBRATION_MEASURE_BACK
+  #else
+    #define CALIBRATION_OBJECT_CENTER     {267.5,-9.5,-2.0} //  mm
+    #define CALIBRATION_OBJECT_DIMENSIONS {10.0,  1.0, 10.0} //  mm
   #endif
+  // Comment out any sides which are unreachable by the probe. For best
+  // auto-calibration results, all sides must be reachable.
+  #define CALIBRATION_MEASURE_RIGHT
+  //#define CALIBRATION_MEASURE_FRONT
+  #define CALIBRATION_MEASURE_LEFT
+  #define CALIBRATION_MEASURE_BACK
 
   //#define CALIBRATION_MEASURE_IMIN
   //#define CALIBRATION_MEASURE_IMAX
@@ -1200,15 +1135,10 @@
  *    M909, M910 & LCD - only PRINTRBOARD_REVF & RIGIDBOARD_V2
  */
 //#define PWM_MOTOR_CURRENT { 1300, 1300, 1250 }          // Values in milliamps
-#if !defined(LULZBOT_MOTOR_CURRENT_E1)
-  #define LULZBOT_MOTOR_CURRENT_E1 0
+#if !defined(NIST_MOTOR_CURRENT_E1)
+  #define NIST_MOTOR_CURRENT_E1 0
 #endif
 
-#if ENABLED(TAZ6)
-  #define DIGIPOT_MOTOR_CURRENT { 175,175,200,LULZBOT_MOTOR_CURRENT_E0, LULZBOT_MOTOR_CURRENT_E1 }   // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
-#elif ENABLED(Workhorse)
-  #define DIGIPOT_MOTOR_CURRENT {175, 175, 180, LULZBOT_MOTOR_CURRENT_E0, LULZBOT_MOTOR_CURRENT_E1} //  Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
-#endif
 //#define DAC_MOTOR_CURRENT_DEFAULT { 70, 80, 90, 80 }    // Default drive percent - X, Y, Z, E axis
 
 /**
@@ -1246,8 +1176,8 @@
 // @section lcd
 
 #if EITHER(IS_ULTIPANEL, EXTENSIBLE_UI)
-  #define MANUAL_FEEDRATE { 50*60, 50*60, 50*60, 10*60 } // (mm/min) Feedrates for manual moves along X, Y, Z, E from panel - increase extruder speed from 2*60 J. Case
-  // J. Case - 50*60 extruder speed is too fast, 10*60 is fine but skips at beginning
+  #define MANUAL_FEEDRATE { 50*60, 50*60, 50*60, 10*60 } // (mm/min) Feedrates for manual moves along X, Y, Z, E from panel - increase extruder speed from 2*60
+  // 50*60 extruder speed is too fast, 10*60 is fine but skips at beginning (adjusted max acceleration), 20*60 unhappy motor sounds
   #define FINE_MANUAL_MOVE 0.025    // (mm) Smallest manual move (< 0.1mm) applying to Z on most machines
   #if IS_ULTIPANEL
     #define MANUAL_E_MOVES_RELATIVE // Display extruder move distance rather than "position"
@@ -1272,7 +1202,7 @@
 #if HAS_LCD_MENU
 
   // Add Probe Z Offset calibration to the Z Probe Offsets menu
-  #if HAS_BED_PROBE && ANY(Sidekick_289, Sidekick_747)
+  #if HAS_BED_PROBE
       #define PROBE_OFFSET_WIZARD
     #if ENABLED(PROBE_OFFSET_WIZARD)
       //
@@ -1387,9 +1317,7 @@
    *
    * :['SPI_HALF_SPEED', 'SPI_QUARTER_SPEED', 'SPI_EIGHTH_SPEED']
    */
-  #if ANY(TAZPro, TAZProXT)
-    #define SD_SPI_SPEED SPI_HALF_SPEED
-  #endif
+  #define SD_SPI_SPEED SPI_HALF_SPEED
 
   // The standard SD detect circuit reads LOW when media is inserted and HIGH when empty.
   // Enable this option and set to HIGH if your SD cards are incorrectly detected.
@@ -1541,9 +1469,7 @@
    *
    * [1] On AVR an interrupt-capable pin is best for UHS3 compatibility.
    */
-  #if ANY(TAZPro, TAZProXT)
-    #define USB_FLASH_DRIVE_SUPPORT
-  #endif
+  #define USB_FLASH_DRIVE_SUPPORT
   #if ENABLED(USB_FLASH_DRIVE_SUPPORT)
     /**
      * USB Host Shield Library
@@ -1631,7 +1557,7 @@
  * controller events, as there is a trade-off between reliable
  * printing performance versus fast display updates.
  */
-#if ANY(MiniV2, Sidekick_289, Sidekick_747, TAZ6, Workhorse, HAS_MARLINUI_U8GLIB)
+#if ENABLED(HAS_MARLINUI_U8GLIB)
   // Show SD percentage next to the progress bar
   //#define DOGM_SD_PERCENT
 
@@ -1938,9 +1864,7 @@
   //#define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
     //#define BABYSTEP_HOTEND_Z_OFFSET      // For multiple hotends, babystep relative Z offsets
-    #if DISABLED(TAZPro, TAZProXT)
-      #define BABYSTEP_ZPROBE_GFX_OVERLAY   // Enable graphical overlay on Z-offset editor
-    #endif
+    //#define BABYSTEP_ZPROBE_GFX_OVERLAY   // Enable graphical overlay on Z-offset editor
   #endif
 #endif
 
@@ -2026,30 +1950,18 @@
  * Repeatedly attempt G29 leveling until it succeeds.
  * Stop after G29_MAX_RETRIES attempts.
  */
-// remove this because there is no leveling (J. Case)
-#if true
-  #if DISABLED(Sidekick_289, Sidekick_747)
-    //#define G29_RETRY_AND_RECOVER - turn this off because we are using manual bed leveling
-  #endif
-  #if ENABLED(G29_RETRY_AND_RECOVER)
-    #define G29_MAX_RETRIES 3
-    #define G29_HALT_ON_FAILURE
-    /**
-     * Specify the GCODE commands that will be executed when leveling succeeds,
-     * between attempts, and after the maximum number of retries have been tried.
-     */
-    #define G29_SUCCESS_COMMANDS "M117 Probe successful"
-    #if ENABLED(MiniV2)
-      #define G29_RECOVER_COMMANDS "M104 S170\nG28\nG0 Z5 F6000\nG0 X150 F9999\nG91\nM211 S0\nM400\nM906 Z600\nG0 Z-15 F500\nG0 Z5 F500\nM400\nG90\nM906 Z960\nM211 S1\nG28 Z0\nG28\nG12\nM109 R160\nM400\nM117 Probing bed"
-    #elif ENABLED(TAZ6)
-      #define G29_RECOVER_COMMANDS "G0 Z10\nG12\nM109 R160\nM400\nM117 Probing bed"
-    #elif ENABLED(Workhorse)
-      #define G29_RECOVER_COMMANDS "M104 S170\nG28 Z0\nG28\nG12\nM109 R160\nM400\nM117 Probing bed"
-    #elif ANY(TAZProXT, TAZPro)
-      #define G29_RECOVER_COMMANDS "M104 S170 T0\nM104 S170 T1\nG0 Z5 F6000\nG0 X150 F9999\nG28 Z0\nG28\nG12\nM109 R160\nM400\nM117 Probing bed"
-    #endif
-    #define G29_FAILURE_COMMANDS "M117 Bed leveling failed.\nG0 Z10\nG0 E0\nM300 P25 S880\nM300 P50 S0\nM300 P25 S880\nM300 P50 S0\nM300 P25 S880\nG4 S1"
-  #endif
+// remove this because there is no leveling 
+//#define G29_RETRY_AND_RECOVER - turn this off because we are using manual bed leveling
+#if ENABLED(G29_RETRY_AND_RECOVER)
+  #define G29_MAX_RETRIES 3
+  #define G29_HALT_ON_FAILURE
+  /**
+   * Specify the GCODE commands that will be executed when leveling succeeds,
+   * between attempts, and after the maximum number of retries have been tried.
+   */
+  #define G29_SUCCESS_COMMANDS "M117 Probe successful"
+  #define G29_RECOVER_COMMANDS "M104 S170 T0\nM104 S170 T1\nG0 Z5 F6000\nG0 X150 F9999\nG28 Z0\nG28\nG12\nM109 R160\nM400\nM117 Probing bed"
+  #define G29_FAILURE_COMMANDS "M117 Bed leveling failed.\nG0 Z10\nG0 E0\nM300 P25 S880\nM300 P50 S0\nM300 P25 S880\nM300 P50 S0\nM300 P25 S880\nG4 S1"
 #endif
 
 /**
@@ -2692,11 +2604,7 @@
   #if AXIS_IS_TMC(Z)
     #define Z_CURRENT       975
     #define Z_CURRENT_HOME  Z_CURRENT
-    #if ANY(MiniV2, Sidekick_289, Sidekick_747)
-      #define Z_MICROSTEPS     32
-    #else
-      #define Z_MICROSTEPS     16
-    #endif
+    #define Z_MICROSTEPS     16
     #define Z_RSENSE          0.12
     #define Z_CHAIN_POS      -1
     //#define Z_INTERPOLATE  true
@@ -2757,7 +2665,7 @@
   #endif
 
   #if AXIS_IS_TMC(E0)
-    #define E0_CURRENT      LULZBOT_MOTOR_CURRENT_E0
+    #define E0_CURRENT      NIST_MOTOR_CURRENT_E0
     #define E0_MICROSTEPS    16
     #define E0_RSENSE         0.11
     #define E0_CHAIN_POS     -1
@@ -2765,7 +2673,7 @@
   #endif
 
   #if AXIS_IS_TMC(E1)
-    #define E1_CURRENT      LULZBOT_MOTOR_CURRENT_E1
+    #define E1_CURRENT      NIST_MOTOR_CURRENT_E1
     #define E1_MICROSTEPS   E0_MICROSTEPS
     #define E1_RSENSE         0.11
     #define E1_CHAIN_POS     -1
@@ -2849,9 +2757,7 @@
    * The default SW SPI pins are defined the respective pins files,
    * but you can override or define them here.
    */
-  #if ANY(TAZPro, TAZProXT)
-    #define TMC_USE_SW_SPI
-  #endif
+  #define TMC_USE_SW_SPI
   //#define TMC_SW_MOSI       -1
   //#define TMC_SW_MISO       -1
   //#define TMC_SW_SCK        -1
@@ -3018,21 +2924,12 @@
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     // TMC2209: 0...255. TMC2130: -64...63
-    #if ANY(TAZPro, TAZProXT)
-      #if defined(LULZBOT_UNIVERSAL_TOOLHEAD)
-        #define X_STALL_SENSITIVITY  3
-        #define Y_STALL_SENSITIVITY  5
-      #else      
-        #define X_STALL_SENSITIVITY  5
-        #define Y_STALL_SENSITIVITY  5 
-      #endif
-    #elif ENABLED(MiniV2)
+    #if defined(LULZBOT_UNIVERSAL_TOOLHEAD)
       #define X_STALL_SENSITIVITY  3
-      #define Y_STALL_SENSITIVITY  3
-    #elif ANY(Sidekick_289, Sidekick_747)
-      #define X_STALL_SENSITIVITY  2
-      #define Y_STALL_SENSITIVITY  2
-      #define Z_STALL_SENSITIVITY  4
+      #define Y_STALL_SENSITIVITY  5
+    #else      
+      #define X_STALL_SENSITIVITY  5
+      #define Y_STALL_SENSITIVITY  5 
     #endif
     #define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
     #define Y2_STALL_SENSITIVITY Y_STALL_SENSITIVITY
@@ -3786,17 +3683,7 @@
  *
  * Execute certain G-code commands immediately after power-on.
  */
-#if ANY(Sidekick_289, Sidekick_747)
-  #if ENABLED(TOOLHEAD_M175)
-    #define STARTUP_COMMANDS "M906 Z450\nG91\nG0 Z20\nG90\nG28 X\nM906 Z975\nM206X-6Y-8\nM500\nM117 SideKick Ready"
-  #else
-    #define STARTUP_COMMANDS "M906 Z450\nG91\nG0 Z20\nG90\nG28 X\nM906 Z975"
-  #endif
-#elif ENABLED(TAZ6)
-  #define STARTUP_COMMANDS "G28 X"
-#else
-  #define STARTUP_COMMANDS "G28 Z"
-#endif
+#define STARTUP_COMMANDS "G28 Z"
 
 /**
  * G-code Macros
@@ -3831,71 +3718,29 @@
     #define TAZ6_DEFAULT_PID "P28.79I1.91D108.51"
     #define DEFAULT_PID "P21.0I1.78D61.93"
 
-    #if ANY(TAZ6, Workhorse) //conversion to digipot units = ((mA-750)/5+135)
-      #define E_CURRENT_Aero "160" //((875-750)/5+135) = 160
-      #define E_CURRENT_Std  "135" //((750-750)/5+135) = 135
-      #define E_CURRENT_BMG  "160" //((875-750)/5+135) = 160
-    #else
-      #define E_CURRENT_Aero "960"
-      #define E_CURRENT_BMG  "960"
-    #endif
+    #define E_CURRENT_Aero "960"
+    #define E_CURRENT_BMG  "960"
 
-    #if ANY(Sidekick_289, Sidekick_747)
-      #define MAIN_MENU_ITEM_1_DESC "SK175|0.50mm|BRASS"
-      #define MAIN_MENU_ITEM_1_GCODE "M92E420\nM301P" charSK175_DEFAULT_Kp "I" charSK175_DEFAULT_Ki "D" charSK175_DEFAULT_Kd"\nM906E" E_CURRENT_Aero "\nM500\nM117 SK175|0.50mm|BRASS"
+    #define MAIN_MENU_ITEM_3_DESC "M175v2|0.50mm|CRB CU"
+    #define MAIN_MENU_ITEM_3_GCODE "M92E415\nM301P" charM175_DEFAULT_Kp "I" charM175_DEFAULT_Ki "D" charM175_DEFAULT_Kd "\nM906E" E_CURRENT_BMG "\nM500\nM117 M175v2|0.50mm|CRB CU"
 
-      #define MAIN_MENU_ITEM_2_DESC "SK285|0.50mm|BRASS"
-      #define MAIN_MENU_ITEM_2_GCODE "M92E420\nM301P" charSK285_DEFAULT_Kp "I" charSK285_DEFAULT_Ki "D" charSK285_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 SK285|0.50mm|BRASS"
-    #endif
-    #if DISABLED(TAZ6, Workhorse)
-      #define MAIN_MENU_ITEM_3_DESC "M175v2|0.50mm|CRB CU"
-      #define MAIN_MENU_ITEM_3_GCODE "M92E415\nM301P" charM175_DEFAULT_Kp "I" charM175_DEFAULT_Ki "D" charM175_DEFAULT_Kd "\nM906E" E_CURRENT_BMG "\nM500\nM117 M175v2|0.50mm|CRB CU"
+    #define MAIN_MENU_ITEM_4_DESC "SL|0.25mm|NKL-PL CU"
+    #define MAIN_MENU_ITEM_4_GCODE "M92E420\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 SL|0.25mm|NKL-PL CU"
+    
+    #define MAIN_MENU_ITEM_5_DESC "SE|0.50mm|NKL-PL CU"
+    #define MAIN_MENU_ITEM_5_GCODE "M92E420\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 SE|0.50mm|NKL-PL CU"
 
-      #define MAIN_MENU_ITEM_4_DESC "SL|0.25mm|NKL-PL CU"
-      #define MAIN_MENU_ITEM_4_GCODE "M92E420\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 SL|0.25mm|NKL-PL CU"
-      
-      #define MAIN_MENU_ITEM_5_DESC "SE|0.50mm|NKL-PL CU"
-      #define MAIN_MENU_ITEM_5_GCODE "M92E420\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 SE|0.50mm|NKL-PL CU"
+    #define MAIN_MENU_ITEM_6_DESC "HE|0.50mm|HRD STEEL"
+    #define MAIN_MENU_ITEM_6_GCODE "M92E420\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 HE|0.50mm|HRD STEEL"
 
-      #define MAIN_MENU_ITEM_6_DESC "HE|0.50mm|HRD STEEL"
-      #define MAIN_MENU_ITEM_6_GCODE "M92E420\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 HE|0.50mm|HRD STEEL"
+    #define MAIN_MENU_ITEM_7_DESC "HS|0.80mm|HRD STEEL"
+    #define MAIN_MENU_ITEM_7_GCODE "M92E420\nM301P" charHSHSPLUS_DEFAULT_Kp "I" charHSHSPLUS_DEFAULT_Ki "D" charHSHSPLUS_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 HS|0.80mm|HRD STEEL"
 
-      #define MAIN_MENU_ITEM_7_DESC "HS|0.80mm|HRD STEEL"
-      #define MAIN_MENU_ITEM_7_GCODE "M92E420\nM301P" charHSHSPLUS_DEFAULT_Kp "I" charHSHSPLUS_DEFAULT_Ki "D" charHSHSPLUS_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 HS|0.80mm|HRD STEEL"
+    #define MAIN_MENU_ITEM_8_DESC "HS+|1.20mm|HRD STEEL"
+    #define MAIN_MENU_ITEM_8_GCODE "M92E420\nM301P" charHSHSPLUS_DEFAULT_Kp "I" charHSHSPLUS_DEFAULT_Ki "D" charHSHSPLUS_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 HS+|1.20mm|HRD STEEL"
 
-      #define MAIN_MENU_ITEM_8_DESC "HS+|1.20mm|HRD STEEL"
-      #define MAIN_MENU_ITEM_8_GCODE "M92E420\nM301P" charHSHSPLUS_DEFAULT_Kp "I" charHSHSPLUS_DEFAULT_Ki "D" charHSHSPLUS_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 HS+|1.20mm|HRD STEEL"
-
-      #define MAIN_MENU_ITEM_9_DESC "H175|0.50mm|NKL-PL CU"
-      #define MAIN_MENU_ITEM_9_GCODE "M92E409\nM301P" charH175_DEFAULT_Kp "I" charH175_DEFAULT_Ki "D" charH175_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 H175|0.50mm|NKL-PL CU"
-    #else
-      #define MAIN_MENU_ITEM_3_DESC "M175v2|0.50mm|CRB CU"
-      #define MAIN_MENU_ITEM_3_GCODE "M92E415\nM206Y0\nM301P" charM175_DEFAULT_Kp "I" charM175_DEFAULT_Ki "D" charM175_DEFAULT_Kd "\nM907E" E_CURRENT_BMG "\nM412 S1\nM500\nM117 M175v2|0.50mm|CRB CU"
-
-      #define MAIN_MENU_ITEM_4_DESC "SL|0.25mm|NKL-PL CU"
-      #define MAIN_MENU_ITEM_4_GCODE "M92E420\nM206Y0\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 SL|0.25mm|NKL-PL CU"
-      
-      #define MAIN_MENU_ITEM_5_DESC "SE|0.50mm|NKL-PL CU"
-      #define MAIN_MENU_ITEM_5_GCODE "M92E420\nM206Y0\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 SE|0.50mm|NKL-PL CU"
-
-      #define MAIN_MENU_ITEM_6_DESC "HE|0.50mm|HRD STEEL"
-      #define MAIN_MENU_ITEM_6_GCODE "M92E420\nM206Y0\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 HE|0.50mm|HRD STEEL"
-
-      #define MAIN_MENU_ITEM_7_DESC "HS|0.80mm|HRD STEEL"
-      #define MAIN_MENU_ITEM_7_GCODE "M92E420\nM206Y0\nM301P" charHSHSPLUS_DEFAULT_Kp "I" charHSHSPLUS_DEFAULT_Ki "D" charHSHSPLUS_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 HS|0.80mm|HRD STEEL"
-
-      #define MAIN_MENU_ITEM_8_DESC "HS+|1.20mm|HRD STEEL"
-      #define MAIN_MENU_ITEM_8_GCODE "M92E420\nM206Y0\nM301P" charHSHSPLUS_DEFAULT_Kp "I" charHSHSPLUS_DEFAULT_Ki "D" charHSHSPLUS_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 HS+|1.20mm|HRD STEEL"
-
-      #define MAIN_MENU_ITEM_9_DESC "H175|0.50mm|NKL-PL CU"
-      #define MAIN_MENU_ITEM_9_GCODE "M92E409\nM206Y0\nM301P" charH175_DEFAULT_Kp "I" charH175_DEFAULT_Ki "D" charH175_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 H175|0.50mm|NKL-PL CU"
-    #endif
-
-    #if defined(TAZ6)
-      #define MAIN_MENU_ITEM_1_DESC "Standard|0.5mm"
-      #define MAIN_MENU_ITEM_1_GCODE "M92E833\nM206Y4\nM301P" charTAZ6_STD_DEFAULT_Kp "I" charTAZ6_STD_DEFAULT_Ki "D" charTAZ6_STD_DEFAULT_Kd "\nM907E" E_CURRENT_Std "\nM412 S0\nM500\nM117 Standard|0.5mm"
-    #endif
-
+    #define MAIN_MENU_ITEM_9_DESC "H175|0.50mm|NKL-PL CU"
+    #define MAIN_MENU_ITEM_9_GCODE "M92E409\nM301P" charH175_DEFAULT_Kp "I" charH175_DEFAULT_Ki "D" charH175_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 H175|0.50mm|NKL-PL CU"
   #endif
 #endif
 
@@ -4097,29 +3942,20 @@
  * Adds capability to work with any adjustable current drivers.
  * Implemented as G34 because M915 is deprecated.
  */
-#if ANY(MiniV2, Sidekick_289, Sidekick_747)
-  #define MECHANICAL_GANTRY_CALIBRATION
-#endif
+//#define MECHANICAL_GANTRY_CALIBRATION
 #if ENABLED(MECHANICAL_GANTRY_CALIBRATION)
   #define GANTRY_CALIBRATION_CURRENT    450                   // Default calibration current in ma - TMC
   #define GANTRY_CALIBRATION_FEEDRATE   500                   // Feedrate for correction move
 
-  #if ANY(Sidekick_289, Sidekick_747)
-    #define GANTRY_CALIBRATION_SAFE_POSITION  {X_CENTER, Y_MIN}  // Safe position for nozzle
-    #define GANTRY_CALIBRATION_EXTRA_HEIGHT      15                   // Extra distance in mm past Z_###_POS to move
-  #else
-    #define GANTRY_CALIBRATION_TO_MIN
-    #define GANTRY_CALIBRATION_SAFE_POSITION  {150, 192}  // Safe position for nozzle
-    #define GANTRY_CALIBRATION_EXTRA_HEIGHT     -10                   // Extra distance in mm past Z_###_POS to move
-  #endif
+  #define GANTRY_CALIBRATION_TO_MIN
+  #define GANTRY_CALIBRATION_SAFE_POSITION  {150, 192}  // Safe position for nozzle
+  #define GANTRY_CALIBRATION_EXTRA_HEIGHT     -10                   // Extra distance in mm past Z_###_POS to move
   #define GANTRY_CALIBRATION_XY_PARK_FEEDRATE 3000                // XY Park Feedrate - MMM
   //#define GANTRY_CALIBRATION_COMMANDS_PRE   ""
   #define GANTRY_CALIBRATION_COMMANDS_POST  "G28"
 #endif
 
-#if ANY(TAZPro,TAZProXT,Workhorse)
-  #define X_LEVEL_SEQUENCE
-#endif
+#define X_LEVEL_SEQUENCE
 #if defined (X_LEVEL_SEQUENCE)
   #define LEVELING_COMMANDS "G28 Z\nM18 Z\nG4 P300\nG28 Z" //Homing to the top, disabling the Z motors for 300ms and then rehoming Z
 #endif

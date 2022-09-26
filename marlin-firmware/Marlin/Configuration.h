@@ -1,9 +1,7 @@
-#define LULZBOT_Quiver_TAZPro
-
 //#define TazDualZ
-#define LULZBOT_FILAMENT_RUNOUT
 /************** Uncomment a Tool Head Option From Below *********************/
-#define LULZBOT_UNIVERSAL_TOOLHEAD
+//#define LULZBOT_UNIVERSAL_TOOLHEAD
+#define NIST_SINGLE_TOOLHEAD
 //#define TOOLHEAD_Quiver_DualExtruder            // TAZ Pro Dual Extruder
 
 /**
@@ -79,7 +77,7 @@
 // Author info of this build printed to the host during boot and M115
 #define STRING_CONFIG_H_AUTHOR "Lulzbot -> NIST - J. Case" // Who made the changes.
 #define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
-#define LULZBOT_FW_VERSION "2.0.9.0.13"
+#define NIST_VERSION "2.0.9.0.1"
 
 /**
  * *** VENDORS PLEASE READ ***
@@ -102,13 +100,12 @@
 //#define CUSTOM_STATUS_SCREEN_IMAGE
 
 // @section machine
-#if defined(LULZBOT_Quiver_TAZPro)
-  #define TAZPro
-  #define LULZBOT_CUSTOM_MACHINE_NAME "LulzBot TAZ Pro"
-  #define LULZBOT_LCD_MACHINE_NAME "TAZ Pro"
-  #define LULZBOT_MACHINE_UUID "a952577d-8722-483a-999d-acdc9e772b7b"
-  #define LULZBOT_USE_ARCHIM2
-#endif
+
+//#define Coral
+//#define NIST_CUSTOM_MACHINE_NAME "NIST Coral"
+//#define NIST_LCD_MACHINE_NAME "Coral"
+//#define NIST_MACHINE_UUID "354b54cd-c287-4daf-adb5-7e190ce2e23e" // LulzBot TAZ Pro UUID = "a952577d-8722-483a-999d-acdc9e772b7b"
+
 
 /**
  * Select the serial port on the board to use for communication with the host.
@@ -118,11 +115,8 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#if DISABLED(LULZBOT_USE_ARCHIM2)
-  #define SERIAL_PORT 0
-#else
-  #define SERIAL_PORT -1
-#endif
+
+#define SERIAL_PORT -1
 
 /**
  * Serial Port Baud Rate
@@ -158,20 +152,11 @@
 //#define BLUETOOTH
 
 // Choose the name from boards.h that matches your setup
-// Note: options are commented out to provide the Marlin Auto Build extension the required code to identify the board and pins (J. Case)
-#ifndef MOTHERBOARD
-  //#if ANY(MiniV2, Sidekick_289, Sidekick_747)
-    //#define MOTHERBOARD BOARD_EINSY_RETRO
-  //#elif ANY(TAZ6, Workhorse)
-    //#define MOTHERBOARD BOARD_RAMBO
-  //#elif ANY(TAZPro, TAZProXT)
-    #define MOTHERBOARD BOARD_ARCHIM2
-  //#endif
-#endif
+#define MOTHERBOARD BOARD_ARCHIM2
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME  LULZBOT_CUSTOM_MACHINE_NAME
-#define MACHINE_UUID         LULZBOT_MACHINE_UUID
+#define CUSTOM_MACHINE_NAME  "NIST Coral"
+#define MACHINE_UUID         "354b54cd-c287-4daf-adb5-7e190ce2e23e"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -218,9 +203,20 @@
 
 // @section extruder
 
-/****************************** TAZ 4/5/6 TOOLHEADS ********************************/
-
 /******************************** UNIVERSAL TOOLHEADS *************************/
+#if defined(NIST_SINGLE_TOOLHEAD)
+  #define NIST_UNIVERSAL_MOUNT
+  #define NIST_EXTRUDERS                  1
+  #define NIST_M115_EXTRUDER_TYPE       "Universal"
+  #define NIST_TOOLHEAD_X_MAX_ADJ             0
+  #define NIST_TOOLHEAD_X_MIN_ADJ             0
+  #define NIST_TOOLHEAD_Y_MAX_ADJ             0
+  #define NIST_TOOLHEAD_Y_MIN_ADJ             0
+  #define NIST_TOOLHEAD_Z_MAX_ADJ             0
+  #define NIST_TOOLHEAD_Z_MIN_ADJ             0
+  #define NIST_MOTOR_CURRENT_E0            0 // mA - set current through the motor to zero because there is no motor
+#endif
+
 #if defined(LULZBOT_UNIVERSAL_TOOLHEAD) || ANY(TOOLHEAD_SK285,TOOLHEAD_SK175,TOOLHEAD_M175,TOOLHEAD_H175,TOOLHEAD_SL_SE_HE, TOOLHEAD_HS_HSPLUS)
   #define LULZBOT_UNIVERSAL_MOUNT
   #define LULZBOT_EXTRUDERS                  1
@@ -276,7 +272,7 @@
 
 // This defines the number of extruders
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
-#define EXTRUDERS LULZBOT_EXTRUDERS
+#define EXTRUDERS NIST_EXTRUDERS
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 #define DEFAULT_NOMINAL_FILAMENT_DIA 2.85
@@ -434,8 +430,8 @@
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
 // For the other hotends it is their distance from the extruder 0 hotend.
-#define HOTEND_OFFSET_X LULZBOT_HOTEND_OFFSET_X // (mm) relative X-offset for each nozzle
-#define HOTEND_OFFSET_Y LULZBOT_HOTEND_OFFSET_Y // (mm) relative Y-offset for each nozzle
+#define HOTEND_OFFSET_X NIST_HOTEND_OFFSET_X // (mm) relative X-offset for each nozzle
+#define HOTEND_OFFSET_Y NIST_HOTEND_OFFSET_Y // (mm) relative Y-offset for each nozzle
 //#define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
 
 // @section machine
@@ -568,11 +564,7 @@
 //#define MAX31865_SENSOR_OHMS_1      100
 //#define MAX31865_CALIBRATION_OHMS_1 430
 
-#if defined(TOOLHEAD_Quiver_DualExtruder) // Shorten time that Dual Extruder has to wait for M109
-  #define TEMP_RESIDENCY_TIME 5         // (seconds) Time to wait for hotend to "settle" in M109
-#else
-  #define TEMP_RESIDENCY_TIME 10        // (seconds) Time to wait for hotend to "settle" in M109
-#endif
+#define TEMP_RESIDENCY_TIME 10        // (seconds) Time to wait for hotend to "settle" in M109
 #define TEMP_WINDOW                  1  // (°C) Temperature proximity for the "temperature reached" timer
 #define TEMP_HYSTERESIS              3  // (°C) Temperature proximity considered "close enough" to the target
 
@@ -664,14 +656,6 @@
   
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-  //TAZ 6 Single Extruder (W)
-    #define TAZ6_STD_DEFAULT_Kp 28.79        //used to define stock PID. NOTE: if values are changed, both sets need to be changed.
-    #define TAZ6_STD_DEFAULT_Ki 1.91         //NOTE: if values are changed, both sets need to be changed.
-    #define TAZ6_STD_DEFAULT_Kd 108.51
-    #define charTAZ6_STD_DEFAULT_Kp "28.79"  //used in the tool head menu gcode.
-    #define charTAZ6_STD_DEFAULT_Ki "1.91"
-    #define charTAZ6_STD_DEFAULT_Kd "108.51"
-
   // E3D Titan Aero with LulzBot V6 block (40W)
     #define SLSEHE_DEFAULT_Kp 21.0           //NOTE: if values are changed, both sets need to be changed.
     #define SLSEHE_DEFAULT_Ki 1.78
@@ -679,46 +663,6 @@
     #define charSLSEHE_DEFAULT_Kp "21.0"
     #define charSLSEHE_DEFAULT_Ki "1.78"
     #define charSLSEHE_DEFAULT_Kd "61.93"
-
-  // SK175 Tool head (30W)
-    #define SK175_DEFAULT_Kp 26.47           //NOTE: if values are changed, both sets need to be changed.
-    #define SK175_DEFAULT_Ki 2.32
-    #define SK175_DEFAULT_Kd 75.56
-    #define charSK175_DEFAULT_Kp "26.47"
-    #define charSK175_DEFAULT_Ki "2.32"
-    #define charSK175_DEFAULT_Kd "75.56"
-   
-  // SK285 Tool head (30W)
-    #define SK285_DEFAULT_Kp 26.90           //NOTE: if values are changed, both sets need to be changed.
-    #define SK285_DEFAULT_Ki 2.41
-    #define SK285_DEFAULT_Kd 75.19
-    #define charSK285_DEFAULT_Kp "26.90"
-    #define charSK285_DEFAULT_Ki "2.41"
-    #define charSK285_DEFAULT_Kd "75.19"
-
-  // H175 Tool head (40W)
-    #define H175_DEFAULT_Kp 27.58            //NOTE: if values are changed, both sets need to be changed.
-    #define H175_DEFAULT_Ki 3.22
-    #define H175_DEFAULT_Kd 65.66
-    #define charH175_DEFAULT_Kp "27.58" 
-    #define charH175_DEFAULT_Ki "3.22"
-    #define charH175_DEFAULT_Kd "65.66"
-
-  // M175 Tool head (50W)
-    #define M175_DEFAULT_Kp 22.12            //NOTE: if values are changed, both sets need to be changed.
-    #define M175_DEFAULT_Ki 1.94
-    #define M175_DEFAULT_Kd 63.59
-    #define charM175_DEFAULT_Kp "22.12"
-    #define charM175_DEFAULT_Ki "1.94"
-    #define charM175_DEFAULT_Kd "63.59"
-
-  // HS & HSPLUS Tool heads  
-    #define HSHSPLUS_DEFAULT_Kp 37.55        //NOTE: if values are changed, both sets need to be changed.
-    #define HSHSPLUS_DEFAULT_Ki 5.39
-    #define HSHSPLUS_DEFAULT_Kd 65.36
-    #define charHSHSPLUS_DEFAULT_Kp "37.55"
-    #define charHSHSPLUS_DEFAULT_Ki "5.39"
-    #define charHSHSPLUS_DEFAULT_Kd "65.36"
   
   #if ENABLED(PID_PARAMS_PER_HOTEND)
     // Specify between 1 and HOTENDS values per array.
@@ -729,41 +673,9 @@
   
   #else
     // Sets default PID based on which printer/toolhead is selected
-    #if ENABLED(TAZ6) // Taz 6 Standard toolhead 
-      #define DEFAULT_Kp  TAZ6_STD_DEFAULT_Kp
-      #define DEFAULT_Ki  TAZ6_STD_DEFAULT_Ki
-      #define DEFAULT_Kd  TAZ6_STD_DEFAULT_Kd
-    
-    #elif ANY(TOOLHEAD_SL_SE_HE, LULZBOT_E3D_Titan_Aero_V6, LULZBOT_UNIVERSAL_TOOLHEAD)
-      #define DEFAULT_Kp  SLSEHE_DEFAULT_Kp
-      #define DEFAULT_Ki  SLSEHE_DEFAULT_Ki
-      #define DEFAULT_Kd  SLSEHE_DEFAULT_Kd    
-    
-    #elif ENABLED(TOOLHEAD_SK175)
-      #define DEFAULT_Kp SK175_DEFAULT_Kp
-      #define DEFAULT_Ki SK175_DEFAULT_Ki
-      #define DEFAULT_Kd SK175_DEFAULT_Kd
-      
-    #elif ENABLED(TOOLHEAD_SK285)
-      #define DEFAULT_Kp SK285_DEFAULT_Kp
-      #define DEFAULT_Ki SK285_DEFAULT_Ki
-      #define DEFAULT_Kd SK285_DEFAULT_Kd
-    
-    #elif ENABLED(TOOLHEAD_H175)
-      #define DEFAULT_Kp H175_DEFAULT_Kp
-      #define DEFAULT_Ki H175_DEFAULT_Ki
-      #define DEFAULT_Kd H175_DEFAULT_Kd
-    
-    #elif ENABLED(TOOLHEAD_M175)
-      #define DEFAULT_Kp M175_DEFAULT_Kp
-      #define DEFAULT_Ki M175_DEFAULT_Ki
-      #define DEFAULT_Kd M175_DEFAULT_Kd
-
-    #elif ANY(TOOLHEAD_HS_HSPLUS)
-      #define DEFAULT_Kp HSHSPLUS_DEFAULT_Kp 
-      #define DEFAULT_Ki HSHSPLUS_DEFAULT_Ki 
-      #define DEFAULT_Kd HSHSPLUS_DEFAULT_Kd 
-    #endif
+    #define DEFAULT_Kp  SLSEHE_DEFAULT_Kp
+    #define DEFAULT_Ki  SLSEHE_DEFAULT_Ki
+    #define DEFAULT_Kd  SLSEHE_DEFAULT_Kd
   #endif
 #endif // PIDTEMP
 
@@ -794,11 +706,7 @@
  * When set to any value below 255, enables a form of PWM to the bed that acts like a divider
  * so don't use it unless you are OK with PWM on your bed. (See the comment on enabling PIDTEMPBED)
  */
-#if ANY(TAZ6, TAZWorkhorse)
-  #define MAX_BED_POWER 206 // limits duty cycle to bed; 255=full current
-#else
-  #define MAX_BED_POWER 255 // limits duty cycle to bed; 255=full current
-#endif
+#define MAX_BED_POWER 255 // limits duty cycle to bed; 255=full current
 
 #if ENABLED(PIDTEMPBED)
   //#define MIN_BED_POWER 0
@@ -806,27 +714,10 @@
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #if ENABLED(TAZ6)
-    #define DEFAULT_bedKp 162
-    #define DEFAULT_bedKi 17
-    #define DEFAULT_bedKd 378
-  #elif ENABLED(MiniV2)
-    #define DEFAULT_bedKp 384.33
-    #define DEFAULT_bedKi 72.17
-    #define DEFAULT_bedKd 511.64
-  #elif ANY(Workhorse, TAZPro, TAZProXT)
-    #define DEFAULT_bedKp 286.02
-    #define DEFAULT_bedKi 54.55
-    #define DEFAULT_bedKd 374.9
-  #elif ENABLED(Sidekick_289)
-    #define DEFAULT_bedKp 21.44
-    #define DEFAULT_bedKi 0.49
-    #define DEFAULT_bedKd 626.10
-  #elif ENABLED(Sidekick_747)
-    #define DEFAULT_bedKp 22.77
-    #define DEFAULT_bedKi 0.58
-    #define DEFAULT_bedKd 487.7
-  #endif
+  #define DEFAULT_bedKp 286.02
+  #define DEFAULT_bedKi 54.55
+  #define DEFAULT_bedKd 374.9
+  
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from pidautotune
@@ -899,7 +790,7 @@
  * *** IT IS HIGHLY RECOMMENDED TO LEAVE THIS OPTION ENABLED! ***
  */
 //#define PREVENT_COLD_EXTRUSION
-#define EXTRUDE_MINTEMP 20//140 - move this down J. Case
+#define EXTRUDE_MINTEMP 20 // 140
 
 /**
  * Prevent a single extrusion longer than EXTRUDE_MAXLENGTH.
@@ -956,17 +847,11 @@
 // Almost all printers will be using one per axis. Probes will use one or more of the
 // extra connectors. Leave undefined any used for non-endstop and non-probe purposes.
 #define USE_XMIN_PLUG
-#if DISABLED(MiniV2, TAZPro, TAZProXT)
-  #define USE_YMIN_PLUG
-#endif
-#define USE_ZMIN_PLUG
 //#define USE_XMAX_PLUG
-#if DISABLED(Workhorse, Sidekick_289, Sidekick_747)
-  #define USE_YMAX_PLUG
-#endif
-#if DISABLED(LULZBOT_BLTouch)
-  #define USE_ZMAX_PLUG
-#endif
+#define USE_ZMIN_PLUG
+//#define USE_YMIN_PLUG
+#define USE_YMAX_PLUG
+#define USE_ZMAX_PLUG
 //#define USE_IMIN_PLUG
 //#define USE_JMIN_PLUG
 //#define USE_KMIN_PLUG
@@ -1016,31 +901,13 @@
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-#if ANY(MiniV2, TAZPro, TAZProXT, Sidekick_289, Sidekick_747)
-  #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-#else
-  #define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#endif
-#if ANY(Sidekick_289, Sidekick_747)
-  #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-#else
-  #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#endif
-
+#define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define X_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#if ANY(MiniV2, TAZPro, TAZProXT, Sidekick_289, Sidekick_747)
-  #define Y_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-#else
-  #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#endif
+#define Y_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#if defined(LULZBOT_BLTouch)
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
-  #define Z_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#else
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
-  #define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-#endif
+#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
+#define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define I_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define J_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define K_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -1066,14 +933,12 @@
  *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'L6470', 'L6474', 'POWERSTEP01', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#if ANY(TAZPro, MiniV2, TAZProXT, Sidekick_289, Sidekick_747)
-  #define X_DRIVER_TYPE  TMC2130
-  #define Y_DRIVER_TYPE  TMC2130
-  #define Z_DRIVER_TYPE  TMC2130
-  #define E0_DRIVER_TYPE TMC2130 // these should be adjusted possibly (J. Case)
-  #define E1_DRIVER_TYPE TMC2130
-  #define E2_DRIVER_TYPE TMC2130
-#endif
+#define X_DRIVER_TYPE  TMC2130
+#define Y_DRIVER_TYPE  TMC2130
+#define Z_DRIVER_TYPE  TMC2130
+#define E0_DRIVER_TYPE TMC2130
+#define E1_DRIVER_TYPE TMC2130
+#define E2_DRIVER_TYPE TMC2130
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
 //#define Z2_DRIVER_TYPE A4988
@@ -1107,14 +972,12 @@
  *
  * :[2,3,4,5,6,7]
  */
-#if NONE(TAZPro, Workhorse, MiniV2, TAZProXT, Sidekick_289, Sidekick_747)
-  #define ENDSTOP_NOISE_THRESHOLD 2
-#endif
+//#define ENDSTOP_NOISE_THRESHOLD 2
+
 
 // Check for stuck or disconnected endstops during homing moves.
-#if DISABLED(TAZPro, MiniV2, TAZProXT, Sidekick_289, Sidekick_747)
-  #define DETECT_BROKEN_ENDSTOP
-#endif
+//#define DETECT_BROKEN_ENDSTOP
+
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -1141,28 +1004,16 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#if ANY(MiniV2, Sidekick_289, Sidekick_747)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 200, 420 }
-#elif ENABLED(TAZ6)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 1600, 833 }
-#elif ANY(Workhorse, TAZPro, TAZProXT)
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 500, 420 }
-#endif
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 500, 420 }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#if ANY(MiniV2, Sidekick_289, Sidekick_747)
-  #define Z_FEEDRATE   300
-#elif ENABLED(TAZ6)
-  #define Z_FEEDRATE   5
-#elif ANY(Workhorse, TAZPro, TAZProXT)
-  #define Z_FEEDRATE   25
-#endif
+#define Z_FEEDRATE   25
 
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, Z_FEEDRATE, 10*60 } // adjust the default_max_feedrate from 40 to 10*60 - J. Case
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, Z_FEEDRATE, 10*60 } // adjust the default_max_feedrate from 40 to 10*60
 
 #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1175,7 +1026,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 9000, 9000, 100, 25 } // reduce default_max_accelration - J. Case
+#define DEFAULT_MAX_ACCELERATION      { 9000, 9000, 100, 5 } // reduce default_max_acceleration from 9000
 
 #define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1190,13 +1041,8 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#if ANY(MiniV2, Sidekick_289, Sidekick_747)
-  #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
-  #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves
-#else
-  #define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
-  #define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves
-#endif
+#define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves
 #define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
 
 /**
@@ -1209,13 +1055,8 @@
  */
 #define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
-  #if ANY(MiniV2, Sidekick_289, Sidekick_747)
-    #define DEFAULT_XJERK 10.0
-    #define DEFAULT_YJERK 10.0
-  #else
-    #define DEFAULT_XJERK 8.0
-    #define DEFAULT_YJERK 8.0
-  #endif
+  #define DEFAULT_XJERK 8.0
+  #define DEFAULT_YJERK 8.0
   #define DEFAULT_ZJERK  0.4
   //#define DEFAULT_IJERK  0.3
   //#define DEFAULT_JJERK  0.3
@@ -1268,9 +1109,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#if DISABLED(TAZ6)
-  #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
-#endif
+#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
 //#define USE_PROBE_FOR_Z_HOMING
@@ -1290,9 +1129,6 @@
  *      - normally-closed switches to GND and D32.
  *      - normally-open switches to 5V and D32.
  */
-#if ENABLED(TAZ6)
-  #define Z_MIN_PROBE_PIN SERVO0_PIN // Pin 32 is the RAMPS default
-#endif
 
 /**
  * Probe Type
@@ -1318,9 +1154,7 @@
  * Use the nozzle as the probe, as with a conductive
  * nozzle system or a piezo-electric smart effector.
  */
-#if DISABLED(Sidekick_289, Sidekick_747)
-  //#define NOZZLE_AS_PROBE // this should probably be turned off (J. Case)
-#endif
+//#define NOZZLE_AS_PROBE // this should probably be turned off
 
 /**
  * Z Servo Probe, such as an endstop switch on a rotating arm.
@@ -1331,9 +1165,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-#if ANY(Sidekick_289, Sidekick_747)
-  #define BLTOUCH
-#endif
+//#define BLTOUCH
 
 /**
  * Touch-MI Probe by hotends.fr
@@ -1425,49 +1257,15 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#if ENABLED(MiniV2)
-  #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.1 }
-#elif ANY(TAZ6, Workhorse)
-  #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.2 }
-#elif ANY(TAZPro, TAZProXT)
-  #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.102 }
-#elif ANY(Sidekick_289, Sidekick_747)
-  #define NOZZLE_TO_PROBE_OFFSET { -1, 50, -2.1 }
-#endif
+#define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.102 } // there is no probe currently
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area. 
-// This should be changed if we change the probe (J. Case)
-#if defined (LULZBOT_BLTouch)
-  #define PROBING_MARGIN 10 
-#else
-  #if ENABLED(MiniV2)
-    #define PROBING_MARGIN -4
-  #elif ENABLED(TAZ6)
-    #define PROBING_MARGIN -8
-  #elif ENABLED(Workhorse)
-    #define PROBING_MARGIN -10
-  #elif ANY(TAZPro, TAZProXT)
-    #define PROBING_MARGIN 10 //-9 edit this (J. Case)
-  #endif
-#endif
+#define PROBING_MARGIN 10 // -9 
+
 
 //Defining a safe position to probe for M48 and PROBE_OFFSET_WIZARD
-#if ANY(Sidekick_289, Sidekick_747)
-  #define PROBE_SAFE_POINT { X_CENTER, Y_CENTER }
-#elif ENABLED(MiniV2)
-  #define PROBE_SAFE_POINT { -4, -4 }
-#elif ENABLED(TAZ6)
-  #define PROBE_SAFE_POINT { -8, -8 }
-#elif ENABLED(Workhorse)
-  #define PROBE_SAFE_POINT { -10, -10 }
-#elif ANY(TAZPro, TAZProXT)
-  #if defined(TOOLHEAD_Quiver_DualExtruder)
-    #define PROBE_SAFE_POINT { -6, -9 } //safe probe point for dual extruder on Pro/XT
-  #else
-    #define PROBE_SAFE_POINT { X_CENTER, Y_CENTER }//{ -1, -9 } //safe probe point for single extruder toolheads on Pro/XT - edit this (J. Case)
-  #endif
-#endif
+#define PROBE_SAFE_POINT { X_CENTER, Y_CENTER }//{ -1, -9 } //safe probe point for single extruder toolheads on Pro/XT
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (200*60)
@@ -1607,22 +1405,9 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#if ANY(TAZ6, TAZPro, TAZProXT)
-  #define INVERT_X_DIR false
-#else
-  #define INVERT_X_DIR true
-#endif
-#if ENABLED(MiniV2)
-  #define INVERT_Y_DIR false
-#else
-  #define INVERT_Y_DIR true
-#endif
-
-#if ANY(TAZ6,Workhorse, TAZPro, TAZProXT)
-  #define INVERT_Z_DIR false
-#else
-  #define INVERT_Z_DIR true
-#endif
+#define INVERT_X_DIR false
+#define INVERT_Y_DIR true
+#define INVERT_Z_DIR false
 //#define INVERT_I_DIR false
 //#define INVERT_J_DIR false
 //#define INVERT_K_DIR false
@@ -1630,13 +1415,8 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#if ANY(Workhorse,TAZ6, TAZPro, TAZProXT)
-  #define INVERT_E0_DIR true
-  #define INVERT_E1_DIR true
-#else
-  #define INVERT_E0_DIR false
-  #define INVERT_E1_DIR false
-#endif
+#define INVERT_E0_DIR false // true
+#define INVERT_E1_DIR false // true
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
 #define INVERT_E4_DIR false
@@ -1664,16 +1444,8 @@
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
 #define X_HOME_DIR -1
-#if ANY(Workhorse, Sidekick_289, Sidekick_747)
-  #define Y_HOME_DIR -1
-#else
-  #define Y_HOME_DIR 1
-#endif
-#if ANY(MiniV2, TAZPro, TAZProXT, Workhorse, Sidekick289, Sidekick747)
-  #define Z_HOME_DIR 1
-#else
-  #define Z_HOME_DIR -1
-#endif
+#define Y_HOME_DIR 1
+#define Z_HOME_DIR 1
 //#define I_HOME_DIR -1
 //#define J_HOME_DIR -1
 //#define K_HOME_DIR -1
@@ -1681,37 +1453,35 @@
 // @section machine
 
 // The size of the printable area
-#if ENABLED(TAZPro) 
-   #if defined(TOOLHEAD_Quiver_DualExtruder)
-    #define X_BED_SIZE 281
-    #define Y_BED_SIZE 283
-    // Travel limits (mm) after homing, corresponding to endstop positions.
-    #define LULZBOT_X_MIN_POS -6// <-- changed
-    #define LULZBOT_Y_MIN_POS -13 // <-- changed
-    #define LULZBOT_X_MAX_POS 308 // <-- changed
-    #define LULZBOT_Y_MAX_POS 315 // <-- changed
-    #define LULZBOT_Z_MIN_POS -9 // <-- changed
-    #define LULZBOT_Z_MAX_POS 299 // <-- changed 
-  #else
-    #define X_BED_SIZE 284
-    #define Y_BED_SIZE 286
-    // Travel limits (mm) after homing, corresponding to endstop positions.
-    #define LULZBOT_X_MIN_POS -1
-    #define LULZBOT_Y_MIN_POS -9
-    #define LULZBOT_X_MAX_POS 313
-    #define LULZBOT_Y_MAX_POS 318
-    #define LULZBOT_Z_MIN_POS -9
-    #define LULZBOT_Z_MAX_POS 299 
-  #endif   
-#endif
+#if defined(TOOLHEAD_Quiver_DualExtruder)
+  #define X_BED_SIZE 281
+  #define Y_BED_SIZE 283
+  // Travel limits (mm) after homing, corresponding to endstop positions.
+  #define LULZBOT_X_MIN_POS -6// <-- changed
+  #define LULZBOT_Y_MIN_POS -13 // <-- changed
+  #define LULZBOT_X_MAX_POS 308 // <-- changed
+  #define LULZBOT_Y_MAX_POS 315 // <-- changed
+  #define LULZBOT_Z_MIN_POS -9 // <-- changed
+  #define LULZBOT_Z_MAX_POS 299 // <-- changed 
+#else
+  #define X_BED_SIZE 284
+  #define Y_BED_SIZE 286
+  // Travel limits (mm) after homing, corresponding to endstop positions.
+  #define LULZBOT_X_MIN_POS -1
+  #define LULZBOT_Y_MIN_POS -9
+  #define LULZBOT_X_MAX_POS 313
+  #define LULZBOT_Y_MAX_POS 318
+  #define LULZBOT_Z_MIN_POS -9
+  #define LULZBOT_Z_MAX_POS 299 
+#endif   
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MAX_POS (LULZBOT_X_MAX_POS + LULZBOT_TOOLHEAD_X_MAX_ADJ)
-#define X_MIN_POS (LULZBOT_X_MIN_POS + LULZBOT_TOOLHEAD_X_MIN_ADJ)
-#define Y_MAX_POS (LULZBOT_Y_MAX_POS + LULZBOT_TOOLHEAD_Y_MAX_ADJ)
-#define Y_MIN_POS (LULZBOT_Y_MIN_POS + LULZBOT_TOOLHEAD_Y_MIN_ADJ)
-#define Z_MAX_POS (LULZBOT_Z_MAX_POS + LULZBOT_TOOLHEAD_Z_MAX_ADJ)
-#define Z_MIN_POS (LULZBOT_Z_MIN_POS + LULZBOT_TOOLHEAD_Z_MIN_ADJ)
+#define X_MAX_POS (LULZBOT_X_MAX_POS + NIST_TOOLHEAD_X_MAX_ADJ)
+#define X_MIN_POS (LULZBOT_X_MIN_POS + NIST_TOOLHEAD_X_MIN_ADJ)
+#define Y_MAX_POS (LULZBOT_Y_MAX_POS + NIST_TOOLHEAD_Y_MAX_ADJ)
+#define Y_MIN_POS (LULZBOT_Y_MIN_POS + NIST_TOOLHEAD_Y_MIN_ADJ)
+#define Z_MAX_POS (LULZBOT_Z_MAX_POS + NIST_TOOLHEAD_Z_MAX_ADJ)
+#define Z_MIN_POS (LULZBOT_Z_MIN_POS + NIST_TOOLHEAD_Z_MIN_ADJ)
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
@@ -1767,17 +1537,11 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-// Turn off the filament runout sensor (J. Case)
-//#if ANY(TAZPro, TAZProXT, Sidekick_289, Sidekick_747,LULZBOT_FILAMENT_RUNOUT) 
-//  #define FILAMENT_RUNOUT_SENSOR
-//#endif
+// Turn off the filament runout sensor
+//#define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  #if defined (TAZ6)  //Standard Tool Head uses the filament runout port for the X-Max limit switch
-    #define FIL_RUNOUT_ENABLED_DEFAULT false // Enable the sensor on startup. Override with M412 followed by M500.
-  #else
-    #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
-  #endif
-  #define NUM_RUNOUT_SENSORS   LULZBOT_EXTRUDERS          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
+  #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
+  #define NUM_RUNOUT_SENSORS   NIST_EXTRUDERS          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
 
   #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
   #define FIL_RUNOUT_PULLUP               // Use internal pullup for filament runout pins.
@@ -1826,9 +1590,7 @@
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
-  #if ANY(TAZPro, TAZProXT)
-    #define FILAMENT_RUNOUT_DISTANCE_MM 14
-  #endif
+  #define FILAMENT_RUNOUT_DISTANCE_MM 14
 
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
     // Enable this option to use an encoder disc that toggles the runout pin
@@ -1878,9 +1640,9 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-//#define AUTO_BED_LEVELING_BILINEAR //- turn off bed leveling (J. Case)
+//#define AUTO_BED_LEVELING_BILINEAR //- turn off bed leveling
 //#define AUTO_BED_LEVELING_UBL
-#define MESH_BED_LEVELING // turn this on (J. Case)
+#define MESH_BED_LEVELING // turn this on
 
 /**
  * Normally G28 leaves leveling disabled on completion. Enable one of
@@ -1904,7 +1666,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-//#define DEBUG_LEVELING_FEATURE //- turn this off (J. Case)
+//#define DEBUG_LEVELING_FEATURE //- turn this off
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL, PROBE_MANUALLY)
   // Set a height for the start of manual adjustment
@@ -1951,19 +1713,11 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #if defined (Sidekick_747)
-    #define GRID_MAX_POINTS_X 4  //4x4 grid to avoid hitting the handle on the flex bed
-  #elif defined(Sidekick_289)
-    #define GRID_MAX_POINTS_X 3  //3x3 grid to increase startup speed
-  #else
-    #define GRID_MAX_POINTS_X 2  //2x2 grid of mounted washers
-  #endif
+  #define GRID_MAX_POINTS_X 2  //2x2 grid of mounted washers
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
-  #if ANY(MiniV2, TAZ6)
-    #define PROBE_Y_FIRST
-  #endif
+  //#define PROBE_Y_FIRST
 
   #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
 
@@ -2023,10 +1777,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#if ANY(Sidekick_289, Sidekick_747)
-  #define LCD_BED_LEVELING
-#endif
-//#define LCD_BED_LEVELING // add this feature (J. Case) - not an option for non programmable LCD
+//#define LCD_BED_LEVELING
 
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
@@ -2098,29 +1849,15 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing.
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-#if ANY(TAZ6, Sidekick_289, Sidekick_747)
-  #define Z_SAFE_HOMING
-#endif
-#define Z_SAFE_HOMING // enable this (J. Case)
+//#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
-  #if ENABLED(TAZ6)
-    #define Z_SAFE_HOMING_X_POINT -20.1  // X point for Z homing
-    #define Z_SAFE_HOMING_Y_POINT 259.5  // Y point for Z homing
-  #else //#elif ANY(Sidekick_289, Sisdekick_747) edit this (J. Case)
-    #define Z_SAFE_HOMING_X_POINT (X_CENTER)  // X point for Z homing
-    #define Z_SAFE_HOMING_Y_POINT (Y_BED_SIZE/2)  // Y point for Z homing
-  #endif
+  #define Z_SAFE_HOMING_X_POINT (X_CENTER)  // X point for Z homing
+  #define Z_SAFE_HOMING_Y_POINT (Y_BED_SIZE/2)  // Y point for Z homing
 #endif
 
 // Homing speeds (mm/min)
-#if ANY(MiniV2, Sidekick_289, Sidekick_747)
-  #define HOMING_FEEDRATE_Z  (50*60)
-#elif ANY(Workhorse, TAZPro, TAZProXT)
-  #define HOMING_FEEDRATE_Z  1800
-#else
-  #define HOMING_FEEDRATE_Z  (4*60)
-#endif
+#define HOMING_FEEDRATE_Z  1800
 #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), HOMING_FEEDRATE_Z }
 
 // Validate that endstops are triggered on homing moves
@@ -2258,13 +1995,7 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-    #if ANY(Sidekick_289, Sidekick_747, MiniV2)
-    #define NOZZLE_PARK_POINT { X_CENTER, (Y_MAX_POS - 5), Z_MAX_POS }
-  #elif ENABLED(TAZ6)
-    #define NOZZLE_PARK_POINT { X_CENTER, (Y_MAX_POS - 5), (10) }
-  #else
-    #define NOZZLE_PARK_POINT { X_CENTER, (Y_MAX_POS - 5), (Z_MAX_POS/2) }
-  #endif
+  #define NOZZLE_PARK_POINT { X_CENTER, (Y_MAX_POS - 5), (Z_MAX_POS/2) }
   //#define NOZZLE_PARK_X_ONLY          // X move only is required to park
   //#define NOZZLE_PARK_Y_ONLY          // Y move only is required to park
   #define NOZZLE_PARK_Z_RAISE_MIN   10   // (mm) Always raise Z by at least this distance
@@ -2326,19 +2057,8 @@
 
   // Specify positions for each tool as { { X, Y, Z }, { X, Y, Z } }
   // Dual hotend system may use { {  -20, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) },  {  420, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) }}
-  #if ENABLED(MiniV2)
-    #define NOZZLE_CLEAN_START_POINT {  45, 177, 0 }
-    #define NOZZLE_CLEAN_END_POINT   { 115, 177, 0 }
-  #elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_UNIVERSAL_TOOLHEAD)
-    #define NOZZLE_CLEAN_START_POINT { 300, 95, 1 }
-    #define NOZZLE_CLEAN_END_POINT   { 300, 25, 1 }
-  #elif ANY(TAZPro, TAZProXT) && ENABLED(TOOLHEAD_Quiver_DualExtruder) 
-    #define NOZZLE_CLEAN_START_POINT {{ -17, 95, 1 }, { 297, 95, 1 }}
-    #define NOZZLE_CLEAN_END_POINT   {{ -17, 25, 1 }, { 297, 25, 1 }}
-  #else
-    #define NOZZLE_CLEAN_START_POINT {  -17, 95, 1 }
-    #define NOZZLE_CLEAN_END_POINT   { -17, 25, 1 }
-  #endif
+  #define NOZZLE_CLEAN_START_POINT { 300, 95, 1 }
+  #define NOZZLE_CLEAN_END_POINT   { 300, 25, 1 }
 
   // Circular pattern radius
   #define NOZZLE_CLEAN_CIRCLE_RADIUS 6.5
@@ -2361,17 +2081,7 @@
   //#define NOZZLE_CLEAN_HEATUP       // Heat up the nozzle instead of skipping wipe
 
   // Explicit wipe G-code script applies to a G12 with no arguments.
-  #if ENABLED(MiniV2)
-    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nG1 X115 Y177 Z10 F4000\\nG1 Z-1\nM114\nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 Z15\nM400\nM117 Wipe Complete"
-  #elif ENABLED(TAZ6)
-    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nG1 Z1\nM114\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Z15\nM400\nM117 Wipe Complete"
-  #elif ENABLED(Workhorse)
-    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nM117 Wipe Complete"
-  #elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_UNIVERSAL_TOOLHEAD)
-    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X300 Y25 Z10 F4000\nG1 Z-1 F4000\nM114\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Z15 F4000\nM400\nG0 Y-9.0 F4000\nM117 Wipe Complete"
-  #elif ANY(TAZPro, TAZProXT) && ENABLED(TOOLHEAD_Quiver_DualExtruder) 
-    #define WIPE_SEQUENCE_COMMANDS "G1 X-17 Y25 Z10 F4000\nT0\nG1 Z-1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400"
-  #endif
+  #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X300 Y25 Z10 F4000\nG1 Z-1 F4000\nM114\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Z15 F4000\nM400\nG0 Y-9.0 F4000\nM117 Wipe Complete"
 #endif
 
 /**
@@ -2550,9 +2260,7 @@
 //
 //  Set this option if CLOCKWISE causes values to DECREASE
 //
-#if ANY(MiniV2, Sidekick_289, Sidekick_747)
-  #define REVERSE_ENCODER_DIRECTION
-#endif
+//#define REVERSE_ENCODER_DIRECTION
 
 //
 // This option reverses the encoder direction for navigating LCD menus.
@@ -2764,13 +2472,11 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-#if DISABLED(TAZPro, TAZProXT)
-  #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 
-  #define ST7920_DELAY_1 DELAY_NS(200) // After CLK LOW
-  #define ST7920_DELAY_2 DELAY_NS(400) // After DAT
-  #define ST7920_DELAY_3 DELAY_NS(200) // After CLK HIGH
-#endif
+//#define ST7920_DELAY_1 DELAY_NS(200) // After CLK LOW
+//#define ST7920_DELAY_2 DELAY_NS(400) // After DAT
+//#define ST7920_DELAY_3 DELAY_NS(200) // After CLK HIGH
 
 //
 // K.3D Full Graphic Smart Controller
@@ -2980,9 +2686,7 @@
 // Touch UI for FTDI EVE (FT800/FT810) displays
 // See Configuration_adv.h for all configuration options.
 //
-#if ANY(TAZPro, TAZProXT)
-  #define TOUCH_UI_FTDI_EVE
-#endif
+#define TOUCH_UI_FTDI_EVE
 
 //
 // Touch-screen LCD for Anycubic printers
@@ -3190,16 +2894,12 @@
 //#define NUM_M106_FANS 1
 
 // Increase the FAN PWM frequency. Removes the PWM noise but increases heating in the FET/Arduino
-#if ANY(MiniV2, TAZ6, Workhorse, Sidekick_289, Sidekick_747)
-  #define FAST_PWM_FAN
-#endif
+//#define FAST_PWM_FAN
 
 // Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
 // which is not as annoying as with the hardware PWM. On the other hand, if this frequency
 // is too low, you should also increment SOFT_PWM_SCALE.
-#if ANY(TAZPro, TAZProXT)
-  #define FAN_SOFT_PWM
-#endif
+#define FAN_SOFT_PWM
 
 // Incrementing this by 1 will double the software PWM frequency,
 // affecting heaters, and the fan if FAN_SOFT_PWM is enabled.

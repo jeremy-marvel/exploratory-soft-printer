@@ -36,29 +36,20 @@ using namespace Theme;
 #if ENABLED(TOUCH_UI_PORTRAIT)
   #define GRID_ROWS 8
   #define GRID_COLS 2
+  // restore Marlin menu
   #define LEVELING_TITLE_POS BTN_POS(1,1), BTN_SIZE(2,1)
   #define LEVEL_AXIS_POS     BTN_POS(1,2), BTN_SIZE(2,1)
   #define BED_MESH_TITLE_POS BTN_POS(1,3), BTN_SIZE(2,1)
   #define PROBE_BED_POS      BTN_POS(1,4), BTN_SIZE(1,1)
   #define TEST_MESH_POS      BTN_POS(2,4), BTN_SIZE(1,1)
+  //#define M48_TEST_POS       BTN_POS(2,4), BTN_SIZE(1,1)
   #define SHOW_MESH_POS      BTN_POS(1,5), BTN_SIZE(1,1)
   #define EDIT_MESH_POS      BTN_POS(2,5), BTN_SIZE(1,1)
   #define BLTOUCH_TITLE_POS  BTN_POS(1,6), BTN_SIZE(2,1)
   #define BLTOUCH_RESET_POS  BTN_POS(1,7), BTN_SIZE(1,1)
   #define BLTOUCH_TEST_POS   BTN_POS(2,7), BTN_SIZE(1,1)
   #define BACK_POS           BTN_POS(1,8), BTN_SIZE(2,1)
-  // comment out this section from lulzbot and restore the original code from Marlin (J. Case)
-  //#define LEVELING_TITLE_POS BTN_POS(1,1), BTN_SIZE(2,1)
-  //#define LEVEL_AXIS_POS     BTN_POS(1,2), BTN_SIZE(2,1)
-  //#define BED_MESH_TITLE_POS BTN_POS(1,3), BTN_SIZE(2,1)
-  //#define PROBE_BED_POS      BTN_POS(1,4), BTN_SIZE(1,1)
-  //#define M48_TEST_POS       BTN_POS(2,4), BTN_SIZE(1,1)
-  //#define SHOW_MESH_POS      BTN_POS(1,5), BTN_SIZE(1,1)
-  //#define EDIT_MESH_POS      BTN_POS(2,5), BTN_SIZE(1,1)
-  //#define BLTOUCH_TITLE_POS  BTN_POS(1,6), BTN_SIZE(2,1)
-  //#define BLTOUCH_RESET_POS  BTN_POS(1,7), BTN_SIZE(1,1)
-  //#define BLTOUCH_TEST_POS   BTN_POS(2,7), BTN_SIZE(1,1)
-  //#define BACK_POS           BTN_POS(1,8), BTN_SIZE(2,1)
+  
 #else
   #define GRID_ROWS 6
   #define GRID_COLS 3
@@ -94,26 +85,22 @@ void LevelingMenu::onRedraw(draw_mode_t what) {
     #endif
        .font(font_medium).colors(normal_btn)
        .enabled(EITHER(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION))
+       //.enabled(ANY(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION,X_LEVEL_SEQUENCE))
        .tag(2).button(LEVEL_AXIS_POS, GET_TEXT_F(MSG_LEVEL_X_AXIS))
        .enabled(ENABLED(HAS_BED_PROBE))
        .tag(3).button(PROBE_BED_POS, GET_TEXT_F(MSG_PROBE_BED))
+       //.enabled(ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST))        //Taking over mesh view option due to using Bilinear leveling and not being able to edit the mesh
+       //.tag(4).button(M48_TEST_POS, GET_TEXT_F(MSG_M48_TEST))
        .enabled(ENABLED(HAS_MESH))
        .tag(4).button(SHOW_MESH_POS, GET_TEXT_F(MSG_MESH_VIEW))
        .enabled(ENABLED(HAS_MESH))
        .tag(5).button(EDIT_MESH_POS, GET_TEXT_F(MSG_EDIT_MESH))
        .enabled(ENABLED(G26_MESH_VALIDATION))
        .tag(6).button(TEST_MESH_POS, GET_TEXT_F(MSG_PRINT_TEST))
-       // comment out this section from lulzbot and restore the original code from Marlin (J. Case)
-       //.font(font_medium).colors(normal_btn)
-       //.enabled(ANY(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION,X_LEVEL_SEQUENCE))
-       //.tag(2).button(LEVEL_AXIS_POS, GET_TEXT_F(MSG_LEVEL_X_AXIS))
-       //.tag(3).button(PROBE_BED_POS, GET_TEXT_F(MSG_PROBE_BED))
-       //.enabled(ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST))        //Taking over mesh view option due to using Bilinear leveling and not being able to edit the mesh
-       //.tag(4).button(M48_TEST_POS, GET_TEXT_F(MSG_M48_TEST))
     //#if DISABLED (AUTO_BED_LEVELING_BILINEAR)
        //.enabled(ENABLED(HAS_MESH))
        //.tag(5).button(EDIT_MESH_POS, GET_TEXT_F(MSG_EDIT_MESH))
-       //.enabled(ENABLED(G26_MESH_VALIDATION)) - remove this because I can't find TEST_MESH_POS (J. Case) - it is a button above (J. Case)
+       //.enabled(ENABLED(G26_MESH_VALIDATION))
        //.tag(6).button(TEST_MESH_POS, GET_TEXT_F(MSG_PRINT_TEST))
     //#endif
     #if ENABLED(BLTOUCH)
