@@ -94,7 +94,9 @@
 #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-#define SHOW_CUSTOM_BOOTSCREEN
+//#define SHOW_CUSTOM_BOOTSCREEN
+// custom bootscreen is located in Marlin/src/lcd/extui/ftdi_eve_touch_ui/theme/bootscreen_logo_potrait.h
+// to make custom bootscreen, use Marlin/src/lcd/extui/ftdi_eve_touch_ui/scripts/svg2cpp.py
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
 //#define CUSTOM_STATUS_SCREEN_IMAGE
