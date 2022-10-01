@@ -5,36 +5,26 @@ Start Gcode:
 ;More information can be found at https://marlinfw.org/meta/gcode/
 ;
 M73 P0                  ; clear LCD progress bar
-M75 					; Start LCD Print Timer
-G26 					; clear potential 'probe fail' condition
+M75                     ; Start LCD Print Timer
+G26                     ; disable fans
 M107 					; disable fans
 M420 S0                 ; disable leveling matrix
 G90 					; absolute positioning
 M82 					; set extruder to absolute mode
 G92 E0 					; set extruder position to 0
-M140 S{material_bed_temperature_layer_0} ; start bed heating up
-G28 					; home all axes
-G0 X145 Y187 Z156 F3000 			; move away from endstops
-M117 Q - SE Heating Up...			; progress indicator message on LCD
-M206 X0 Y0 Z0               ; reseting stock nozzle position ### CAUTION: changing this line can affect print quality ###
+G1 X240 Y270 Z60 F3000   ; move to printing position
+M117 Fast purge (~3.8 min); progress indicator message on LCD
+G1 E500 F130
 M400					; wait for moves to finish
-M117 Heating...				; progress indicator message on LCD
-M109 R{material_print_temperature_layer_0} ; wait for extruder to reach initial printing temp
-M190 R{material_bed_temperature_layer_0} ; wait for bed to reach printing temp
-G1 Z2 E0 F75				; prime tiny bit of filament into the nozzle
-M117 Q - SE Printing...		; progress indicator message on LCD
+M117 Slow purge (~12.5 min); progress indicator on LCD
+G1 E1500 F80
+M400
+M117 Printing...        ; print complete message
 
 End Gcode:
 M400                                      ; wait for moves to finish
-M140 S{material_part_removal_temperature} ; start bed cooling
-M104 S0                                   ; disable hotend
-M107                                      ; disable fans
-M117 Cooling please wait                  ; progress indicator message on LCD
-G1 X5 Y5 Z290 E0 F3000                    ; move to cooling position
-M190 R{material_part_removal_temperature} ; wait for bed to cool down to removal temp
-G1 X145 F1000                             ; move extruder out of the way
-G1 Y260 F1000                             ; present finished print
-M140 S{material_keep_part_removal_temperature_t}; keep temperature or cool down
+G1 X240 Y270 Z60 F3000                    ; move to cooling position
+M400					  ; wait for moves to finish
 M77					  ; End LCD Print Timer
 G90                                       ; absolute positioning
 M18 X Y E				  ; turn off x y and e axis
