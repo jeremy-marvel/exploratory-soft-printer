@@ -1,5 +1,5 @@
 Start Gcode:
-;This G-Code has been generated specifically for LulzBot TAZ Pro with SE Tool Head - edited by J. Case 8/22/2023 for printing soft materials
+;This G-Code has been generated specifically for LulzBot TAZ Pro with SE Tool Head - edited by J. Case 1/24/2023 for printing soft materials
 ;
 ;The following lines can be uncommented for printer specific fine tuning
 ;More information can be found at https://marlinfw.org/meta/gcode/
@@ -13,11 +13,11 @@ G90 					; absolute positioning
 M82 					; set extruder to absolute mode
 G92 E0 					; set extruder position to 0
 G1 X240 Y270 Z60 F3000   ; move to printing position
-M117 Fast purge (~3.8 min); progress indicator message on LCD
-G1 E500 F130
+M117 Fast purge (~2.7 min); progress indicator message on LCD
+G1 E350 F130
 M400					; wait for moves to finish
-M117 Slow purge (~12.5 min); progress indicator on LCD
-G1 E1500 F80
+M117 Slow purge (~7.1 min); progress indicator on LCD
+G1 E500 F70
 M400
 M117 Printing...        ; print complete message
 
