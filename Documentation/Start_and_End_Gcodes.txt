@@ -16,7 +16,7 @@ G1 X240 Y270 Z60 F3000   ; move to printing position
 M117 Fast purge (~2.7 min); progress indicator message on LCD
 G1 E350 F130
 M400					; wait for moves to finish
-M117 Slow purge (~7.1 min); progress indicator on LCD
+M117 Slow purge (~2.1 min); progress indicator on LCD
 G1 E500 F70
 M400
 M117 Printing...        ; print complete message
